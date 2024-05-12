@@ -5,5 +5,6 @@ namespace Minecraft {
     public class ChunkMeshSystemData : IComponentData {
         public Material OpaqueMaterial;
         public Material TransparentMaterial;
+        public Mesh TestMesh;
     }
 }

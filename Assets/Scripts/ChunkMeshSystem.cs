@@ -54,7 +54,7 @@ namespace Minecraft {
                 };
 
                 var meshes = new Mesh[] {
-                    mesh,
+                    mesh
                 };
 
                 RenderMeshUtility.AddComponents(

@@ -4,8 +4,6 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
-using UnityEditor.PackageManager.Requests;
-using UnityEngine;
 
 namespace Minecraft.Lighting {
     [BurstCompile]
@@ -252,6 +250,7 @@ namespace Minecraft.Lighting {
             return true;
         }
 
+        [BurstCompile]
         private bool TryCompleteJob(ref SystemState state, in ScheduledJob job, in RefRW<ChunkBufferingSystemData> chunkBufferingSystemData, in EntityCommandBuffer commandBuffer) {
             if (!job.Handle.IsCompleted) {
                 return false;

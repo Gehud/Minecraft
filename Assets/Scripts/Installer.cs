@@ -11,6 +11,8 @@ namespace Minecraft {
         private Material opaqueMaterial;
         [SerializeField]
         private Material transparentMaterial;
+        [SerializeField]
+        private Mesh testMesh;
         [SerializeField, Min(0)]
         private int waterLevel = 45;
         [SerializeField]
@@ -44,6 +46,7 @@ namespace Minecraft {
             world.EntityManager.AddComponentObject(chunkSystem, new ChunkMeshSystemData {
                 OpaqueMaterial = opaqueMaterial,
                 TransparentMaterial = transparentMaterial,
+                TestMesh = testMesh
             });
 
             var chunkGenerationSystem = world.GetExistingSystem<ChunkGenerationSystem>();

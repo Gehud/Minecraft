@@ -340,20 +340,6 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "a7e27b2ef25e4277a250a71c9efa2c3c"
-                },
-                "m_SlotId": 7
-            },
-            "m_InputSlot": {
-                "m_Node": {
-                    "m_Id": "123dff68bba4451b82d74d66e9184c5b"
-                },
-                "m_SlotId": 0
-            }
-        },
-        {
-            "m_OutputSlot": {
-                "m_Node": {
                     "m_Id": "a8cca2c27cbf429ab8dbc19e5fbd768c"
                 },
                 "m_SlotId": 0
@@ -931,31 +917,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
-    "m_ObjectId": "20049ad0a24c476fb12c2c991c3f0549",
-    "m_Id": 0,
-    "m_DisplayName": "Light",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Light",
-    "m_StageCapability": 1,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.BlockNode",
     "m_ObjectId": "2568380afcfc4ffcb1e0a1d122515c75",
     "m_Group": {
@@ -1021,6 +982,31 @@
     "m_Labels": [
         "Z"
     ]
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "2a31cd2c8de44f0b830f8126cbcd6f1f",
+    "m_Id": 0,
+    "m_DisplayName": "Light",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Light",
+    "m_StageCapability": 1,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
 }
 
 {
@@ -1394,10 +1380,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -876.0,
-            "y": -286.66668701171877,
-            "width": 147.33331298828126,
-            "height": 132.00001525878907
+            "x": -898.6666870117188,
+            "y": -299.3333435058594,
+            "width": 147.3333740234375,
+            "height": 131.99998474121095
         }
     },
     "m_Slots": [
@@ -1573,9 +1559,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -293.9999694824219,
-            "y": -360.6666564941406,
-            "width": 56.00004577636719,
+            "x": -316.6666564941406,
+            "y": -373.33331298828127,
+            "width": 55.99993896484375,
             "height": 24.0
         }
     },
@@ -1799,9 +1785,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -386.66650390625,
-            "y": -60.66666030883789,
-            "width": 120.66656494140625,
+            "x": -409.3333740234375,
+            "y": -73.3333511352539,
+            "width": 120.6666259765625,
             "height": 150.66665649414063
         }
     },
@@ -2105,10 +2091,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -238.66665649414063,
-            "y": -60.66667175292969,
-            "width": 132.66665649414063,
-            "height": 150.6666717529297
+            "x": -261.3333435058594,
+            "y": -73.3333511352539,
+            "width": 132.66659545898438,
+            "height": 150.66665649414063
         }
     },
     "m_Slots": [
@@ -2237,8 +2223,8 @@
     "m_ObjectId": "a67f0fddfdd242c19f0175c730a64198",
     "m_Title": "Unpacking",
     "m_Position": {
-        "x": 10.0,
-        "y": 10.0
+        "x": -924.0000610351563,
+        "y": -431.9999694824219
     }
 }
 
@@ -2945,7 +2931,7 @@
     },
     "m_Slots": [
         {
-            "m_Id": "e2c86c1fa893455db4a952aec23d1340"
+            "m_Id": "e8a55f2f8c5645a1a36efdd45042a3b6"
         }
     ],
     "synonyms": [],
@@ -2997,10 +2983,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -386.66650390625,
-            "y": -262.6666564941406,
-            "width": 119.99993896484375,
-            "height": 150.6666259765625
+            "x": -409.3333740234375,
+            "y": -275.3333740234375,
+            "width": 120.00003051757813,
+            "height": 150.66665649414063
         }
     },
     "m_Slots": [
@@ -3059,10 +3045,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -238.6666717529297,
-            "y": -262.66668701171877,
-            "width": 129.33334350585938,
-            "height": 102.66665649414063
+            "x": -261.3333435058594,
+            "y": -275.3333740234375,
+            "width": 129.33331298828126,
+            "height": 102.66667175292969
         }
     },
     "m_Slots": [
@@ -3243,7 +3229,7 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
-    "m_ObjectId": "e2c86c1fa893455db4a952aec23d1340",
+    "m_ObjectId": "e8a55f2f8c5645a1a36efdd45042a3b6",
     "m_Id": 0,
     "m_DisplayName": "Out",
     "m_SlotType": 1,
@@ -3348,7 +3334,7 @@
     },
     "m_Slots": [
         {
-            "m_Id": "20049ad0a24c476fb12c2c991c3f0549"
+            "m_Id": "2a31cd2c8de44f0b830f8126cbcd6f1f"
         }
     ],
     "synonyms": [],
@@ -3447,10 +3433,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -693.9998779296875,
-            "y": -286.6666259765625,
+            "x": -716.6666870117188,
+            "y": -299.3333435058594,
             "width": 236.66665649414063,
-            "height": 143.99996948242188
+            "height": 143.99998474121095
         }
     },
     "m_Slots": [
@@ -3478,7 +3464,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_SourceType": 0,
+    "m_SourceType": 1,
     "m_FunctionName": "UnpackVertex",
     "m_FunctionSource": "c6f7a0d320f202e4b8c10e5d33016608",
     "m_FunctionBody": "// Mask = 2 ^ Bit - 1\n\nuint aData = asuint(Data.x);\nuint bData = asuint(Data.y);\n\n// A\nuint yBit = 5u;\nuint zBit = 5u;\nuint iBit = 9u;\n\nuint yMask = 31u;\nuint zMask = 31u;\nuint iMask = 511u;\n\nuint ziBit = zBit + iBit;\nuint yziBit = yBit + ziBit;\n\nuint x = uint(aData >> yziBit);\nuint y = uint((aData >> ziBit) & yMask);\nuint z = uint((aData >> iBit) & zMask);\nuint i = uint(aData & iMask);\n\nPosition = float3(x, y, z);\n\nuint u = i % 17;\nuint v = i / 17;\nfloat uvStep = 16.0 / 256.0;\nUV = float2(u * uvStep, v * uvStep);\n\n// B\nuint gBit = 6u;\nuint bBit = 6u;\nuint sBit = 6u;\n\nuint gMask = 63u;\nuint bMask = 63u;\nuint sMask = 63u;\n\nuint bsBit = bBit + sBit;\nuint gbsBit = gBit + bsBit;\n\nfloat r = int(bData >> gbsBit) / 4.0 / 16.0;\nfloat g = int((bData >> bsBit) & gMask) / 4.0 / 16.0;\nfloat b = int((bData >> sBit) & bMask) / 4.0 / 16.0;\nfloat s = int(bData & sMask) / 4.0 / 16.0;\nLight = float4(r, g, b, s);"

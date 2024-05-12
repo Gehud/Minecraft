@@ -161,6 +161,17 @@ namespace Minecraft
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""6e815e0f-6605-4051-9b8f-8b99e0aede57"",
+                    ""path"": ""<Touchscreen>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touchscreen"",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
                     ""name"": ""1D Axis"",
                     ""id"": ""1bfc2cd5-0074-4dd1-9804-75a8dbbf138c"",
                     ""path"": ""1DAxis"",
@@ -228,6 +239,17 @@ namespace Minecraft
                 },
                 {
                     ""name"": """",
+                    ""id"": ""a3f1be88-3bd8-4ded-bd89-84a9d32ac42a"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Touchscreen"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""09d89d76-23a8-4a59-acd4-09a2ffefde75"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
@@ -251,6 +273,15 @@ namespace Minecraft
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DebugMonitor"",
+                    ""type"": ""Button"",
+                    ""id"": ""af2c30fd-7705-4c45-93d9-933415b8777d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -262,6 +293,17 @@ namespace Minecraft
                     ""processors"": """",
                     ""groups"": ""KeyboardAndMouse"",
                     ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bb6b09e8-c348-4851-a507-773f306b183b"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardAndMouse"",
+                    ""action"": ""DebugMonitor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -284,6 +326,17 @@ namespace Minecraft
                     ""isOR"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Touchscreen"",
+            ""bindingGroup"": ""Touchscreen"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Touchscreen>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
         }
     ]
 }");
@@ -299,6 +352,7 @@ namespace Minecraft
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Inventory = m_UI.FindAction("Inventory", throwIfNotFound: true);
+            m_UI_DebugMonitor = m_UI.FindAction("DebugMonitor", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -455,11 +509,13 @@ namespace Minecraft
         private readonly InputActionMap m_UI;
         private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
         private readonly InputAction m_UI_Inventory;
+        private readonly InputAction m_UI_DebugMonitor;
         public struct UIActions
         {
             private @Controls m_Wrapper;
             public UIActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @Inventory => m_Wrapper.m_UI_Inventory;
+            public InputAction @DebugMonitor => m_Wrapper.m_UI_DebugMonitor;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -472,6 +528,9 @@ namespace Minecraft
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
+                @DebugMonitor.started += instance.OnDebugMonitor;
+                @DebugMonitor.performed += instance.OnDebugMonitor;
+                @DebugMonitor.canceled += instance.OnDebugMonitor;
             }
 
             private void UnregisterCallbacks(IUIActions instance)
@@ -479,6 +538,9 @@ namespace Minecraft
                 @Inventory.started -= instance.OnInventory;
                 @Inventory.performed -= instance.OnInventory;
                 @Inventory.canceled -= instance.OnInventory;
+                @DebugMonitor.started -= instance.OnDebugMonitor;
+                @DebugMonitor.performed -= instance.OnDebugMonitor;
+                @DebugMonitor.canceled -= instance.OnDebugMonitor;
             }
 
             public void RemoveCallbacks(IUIActions instance)
@@ -505,6 +567,15 @@ namespace Minecraft
                 return asset.controlSchemes[m_KeyboardAndMouseSchemeIndex];
             }
         }
+        private int m_TouchscreenSchemeIndex = -1;
+        public InputControlScheme TouchscreenScheme
+        {
+            get
+            {
+                if (m_TouchscreenSchemeIndex == -1) m_TouchscreenSchemeIndex = asset.FindControlSchemeIndex("Touchscreen");
+                return asset.controlSchemes[m_TouchscreenSchemeIndex];
+            }
+        }
         public interface IPlayerActions
         {
             void OnMove(InputAction.CallbackContext context);
@@ -518,6 +589,7 @@ namespace Minecraft
         public interface IUIActions
         {
             void OnInventory(InputAction.CallbackContext context);
+            void OnDebugMonitor(InputAction.CallbackContext context);
         }
     }
 }
