@@ -128,7 +128,7 @@ namespace Minecraft.Physics {
         }
 
         [BurstCompile]
-        void ISystem.OnUpdate(ref SystemState state) {
+        readonly void ISystem.OnUpdate(ref SystemState state) {
             float deltaTime = state.WorldUnmanaged.Time.DeltaTime;
 
             var blocks = SystemAPI.GetSingleton<BlockSystemData>().Blocks;

@@ -116,7 +116,7 @@ namespace Minecraft {
                     Value = rendererEntity
                 });
             } else {
-                state.EntityManager.GetSharedComponentManaged<RenderMeshArray>(entity).Meshes[0] = mesh;
+                state.EntityManager.GetSharedComponentManaged<RenderMeshArray>(entity).MeshReferences[0] = mesh;
             }
 
             state.EntityManager.RemoveComponent<ChunkMeshData>(entity);

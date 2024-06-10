@@ -69,7 +69,7 @@ namespace Minecraft {
             GetEntity(systemData, chunkCoordinate, out var entity);
             if (entity == Entity.Null
                 || !entityManager.HasComponent<Chunk>(entity)
-                || entityManager.IsComponentEnabled<ThreadedChunk>(entity)
+                //|| entityManager.IsComponentEnabled<ThreadedChunk>(entity)
                 || entityManager.HasComponent<RawChunk>(entity)) {
                 voxel = default;
                 return;
