@@ -583,34 +583,7 @@ namespace Minecraft {
         }
 
         private Vertex Pack(int x, int y, int z, int u, int v, int r, int g, int b, int s) {
-            // Layout:
-            // A
-            // x - 5bit, y - 5bit, z - 5bit, i - 9bit
-            // B
-            // r - 6bit, g - 6bit, b - 6bit, s - 6bit 
-
-            var i = IndexUtility.ToIndex(u, v, 17);
-
-            // A
-            var yBit = 5;
-            var zBit = 5;
-            var iBit = 9;
-
-            var ziBit = zBit + iBit;
-            var yziBit = yBit + ziBit;
-
-            // B
-            var gBit = 6;
-            var bBit = 6;
-            var sBit = 6;
-
-            var bsBit = bBit + sBit;
-            var gbsBit = gBit + bsBit;
-
-            return new Vertex {
-                A = (uint)(x << yziBit | y << ziBit | z << iBit | i),
-                B = (uint)(r << gbsBit | g << bsBit | b << sBit | s)
-            };
+            return Vertex.Create(x, y, z, u, v, r, g, b, s);
         }
 
         private void AddFaceIndices(in NativeList<ushort> indices, int aof1, int aof2, int aof3, int aof4, bool force = false) {

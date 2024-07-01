@@ -35,9 +35,7 @@ namespace Minecraft {
 
         [BurstCompile]
         void ISystem.OnCreate(ref SystemState state) {
-            descriptors = new NativeArray<VertexAttributeDescriptor>(1, Allocator.Persistent);
-            descriptors[0] = new VertexAttributeDescriptor(VertexAttribute.TexCoord1, VertexAttributeFormat.UInt32, 2);
-            
+            descriptors = Vertex.GetDescriptors(Allocator.Persistent);
             jobs = new NativeList<ScheduledJob>(Allocator.Persistent);
         }
 

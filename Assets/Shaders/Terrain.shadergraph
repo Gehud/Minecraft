@@ -340,6 +340,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "a7e27b2ef25e4277a250a71c9efa2c3c"
+                },
+                "m_SlotId": 7
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "123dff68bba4451b82d74d66e9184c5b"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "a8cca2c27cbf429ab8dbc19e5fbd768c"
                 },
                 "m_SlotId": 0
@@ -660,10 +674,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 11.999960899353028,
-            "y": 65.33334350585938,
-            "width": 200.0000762939453,
-            "height": 42.666664123535159
+            "x": 24.00003433227539,
+            "y": -262.66668701171877,
+            "width": 199.99998474121095,
+            "height": 42.66664123535156
         }
     },
     "m_Slots": [
@@ -1403,7 +1417,7 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     },
-    "m_OutputChannel": 1
+    "m_OutputChannel": 0
 }
 
 {
@@ -3326,10 +3340,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 0.0,
-            "height": 0.0
+            "x": 14.666643142700196,
+            "y": -257.9999694824219,
+            "width": 200.0,
+            "height": 42.666656494140628
         }
     },
     "m_Slots": [
@@ -3467,7 +3481,7 @@
     "m_SourceType": 1,
     "m_FunctionName": "UnpackVertex",
     "m_FunctionSource": "c6f7a0d320f202e4b8c10e5d33016608",
-    "m_FunctionBody": "// Mask = 2 ^ Bit - 1\n\nuint aData = asuint(Data.x);\nuint bData = asuint(Data.y);\n\n// A\nuint yBit = 5u;\nuint zBit = 5u;\nuint iBit = 9u;\n\nuint yMask = 31u;\nuint zMask = 31u;\nuint iMask = 511u;\n\nuint ziBit = zBit + iBit;\nuint yziBit = yBit + ziBit;\n\nuint x = uint(aData >> yziBit);\nuint y = uint((aData >> ziBit) & yMask);\nuint z = uint((aData >> iBit) & zMask);\nuint i = uint(aData & iMask);\n\nPosition = float3(x, y, z);\n\nuint u = i % 17;\nuint v = i / 17;\nfloat uvStep = 16.0 / 256.0;\nUV = float2(u * uvStep, v * uvStep);\n\n// B\nuint gBit = 6u;\nuint bBit = 6u;\nuint sBit = 6u;\n\nuint gMask = 63u;\nuint bMask = 63u;\nuint sMask = 63u;\n\nuint bsBit = bBit + sBit;\nuint gbsBit = gBit + bsBit;\n\nfloat r = int(bData >> gbsBit) / 4.0 / 16.0;\nfloat g = int((bData >> bsBit) & gMask) / 4.0 / 16.0;\nfloat b = int((bData >> sBit) & bMask) / 4.0 / 16.0;\nfloat s = int(bData & sMask) / 4.0 / 16.0;\nLight = float4(r, g, b, s);"
+    "m_FunctionBody": "// Mask = 2 ^ Bit - 1\n\nuint aData = uint(Data.x);\nuint bData = uint(Data.y);\n\n// A\nuint yBit = 5u;\nuint zBit = 5u;\nuint iBit = 9u;\n\nuint yMask = 31u;\nuint zMask = 31u;\nuint iMask = 511u;\n\nuint ziBit = zBit + iBit;\nuint yziBit = yBit + ziBit;\n\nuint x = uint(aData >> yziBit);\nuint y = uint((aData >> ziBit) & yMask);\nuint z = uint((aData >> iBit) & zMask);\nuint i = uint(aData & iMask);\n\nPosition = float3(x, y, z);\n\nuint u = i % 17;\nuint v = i / 17;\nfloat uvStep = 16.0 / 256.0;\nUV = float2(u * uvStep, v * uvStep);\n\n// B\nuint gBit = 6u;\nuint bBit = 6u;\nuint sBit = 6u;\n\nuint gMask = 63u;\nuint bMask = 63u;\nuint sMask = 63u;\n\nuint bsBit = bBit + sBit;\nuint gbsBit = gBit + bsBit;\n\nfloat r = int(bData >> gbsBit) / 4.0 / 16.0;\nfloat g = int((bData >> bsBit) & gMask) / 4.0 / 16.0;\nfloat b = int((bData >> sBit) & bMask) / 4.0 / 16.0;\nfloat s = int(bData & sMask) / 4.0 / 16.0;\nLight = float4(r, g, b, s);"
 }
 
 {
@@ -3511,6 +3525,9 @@
     "m_AlphaClip": false,
     "m_CastShadows": true,
     "m_ReceiveShadows": true,
+    "m_DisableTint": false,
+    "m_AdditionalMotionVectorMode": 0,
+    "m_AlembicMotionVectors": false,
     "m_SupportsLODCrossFade": false,
     "m_CustomEditorGUI": "",
     "m_SupportVFX": false

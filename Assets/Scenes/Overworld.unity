@@ -2706,8 +2706,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   database: {fileID: 11400000, guid: 42d59e4a3fee1624fab16297906faf9d, type: 2}
-  opaqueMaterial: {fileID: 2100000, guid: 9e477234f5330564cadd509e2aa8a975, type: 2}
-  transparentMaterial: {fileID: 2100000, guid: e4f84e8eb286b8849b3292787bdee176, type: 2}
+  opaqueMaterial: {fileID: 2100000, guid: a35d77d6668bd86479cff31b6bf5d4e3, type: 2}
+  transparentMaterial: {fileID: 2100000, guid: 56066045e4d0b3b43a21312b28b1e472, type: 2}
   testMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   waterLevel: 75
   continentalness: {fileID: 11400000, guid: 5042fb427afb8ae4486a40631d97b236, type: 2}
@@ -4927,7 +4927,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
