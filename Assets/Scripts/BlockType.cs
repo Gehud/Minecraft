@@ -1,5 +1,7 @@
-﻿namespace Minecraft {
-    public enum BlockType : byte {
+﻿namespace Minecraft
+{
+    public enum BlockType : byte
+    {
         Air,
         Stone,
         Dirt,

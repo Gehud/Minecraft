@@ -1,5 +1,7 @@
-﻿namespace Minecraft.Lighting {
-    public enum LightChanel : byte {
+﻿namespace Minecraft.Lighting
+{
+    public enum LightChanel : byte
+    {
         Red,
         Green,
         Blue,

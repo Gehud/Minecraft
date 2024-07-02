@@ -5,24 +5,29 @@ using Unity.Entities;
 using Unity.Transforms;
 using UnityEngine;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class PositionText : MonoBehaviour {
+    public class PositionText : MonoBehaviour
+    {
         private TextMeshProUGUI text;
         private World world;
 
-        private void Awake() {
+        private void Awake()
+        {
             text = GetComponent<TextMeshProUGUI>();
             world = World.DefaultGameObjectInjectionWorld;
         }
 
-        private void Update() {
+        private void Update()
+        {
             var entityManager = world.EntityManager;
             var querry = new EntityQueryBuilder(Allocator.Temp)
                 .WithAll<PlayerMovement, LocalToWorld>()
                 .Build(entityManager);
 
-            if (querry.TryGetSingletonEntity<PlayerMovement>(out var entity)) {
+            if (querry.TryGetSingletonEntity<PlayerMovement>(out var entity))
+            {
                 var localToWorld = entityManager.GetComponentData<LocalToWorld>(entity);
 
                 var position = localToWorld.Position;

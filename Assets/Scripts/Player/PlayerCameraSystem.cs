@@ -7,12 +7,16 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-namespace Minecraft.Player {
+namespace Minecraft.Player
+{
     [UpdateAfter(typeof(PlayerInputSystem))]
-    public partial class PlayerCameraSystem : SystemBase {
-        protected override void OnUpdate() {
+    public partial class PlayerCameraSystem : SystemBase
+    {
+        protected override void OnUpdate()
+        {
             var camera = Camera.main;
-            if (!camera) {
+            if (!camera)
+            {
                 return;
             }
 
@@ -23,10 +27,12 @@ namespace Minecraft.Player {
             var lightingSystemData = SystemAPI.GetSingleton<LightingSystemData>();
 
             var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
-            Entities.ForEach((ref LocalTransform localTransform, ref PlayerCamera playerCamera, in LocalToWorld transform) => {
+            Entities.ForEach((ref LocalTransform localTransform, ref PlayerCamera playerCamera, in LocalToWorld transform) =>
+            {
                 camera.transform.position = transform.Position;
 
-                if (Cursor.lockState != CursorLockMode.Locked) {
+                if (Cursor.lockState != CursorLockMode.Locked)
+                {
                     return;
                 }
 
@@ -42,18 +48,24 @@ namespace Minecraft.Player {
                 orientation.Rotation = quaternion.RotateY(math.radians(playerCamera.Yaw));
                 EntityManager.SetComponentData(playerCamera.OrientationTarget, orientation);
 
-                var ray = new Ray {
+                var ray = new Ray
+                {
                     origin = transform.Position,
                     direction = localTransform.Forward()
                 };
 
-                if (playerInput.IsAttack) {
-                    if (PhysicsSystem.Raycast(blockSystemData, EntityManager, chunkBufferingSystemData, ray, 15.0f, out var hitInfo)) {
+                if (playerInput.IsAttack)
+                {
+                    if (PhysicsSystem.Raycast(blockSystemData, EntityManager, chunkBufferingSystemData, ray, 15.0f, out var hitInfo))
+                    {
                         var voxelCoordinate = (int3)math.floor(hitInfo.point);
                         ChunkBufferingSystem.DestroyVoxel(chunkBufferingSystemData, blockSystemData, lightingSystemData, EntityManager, commandBuffer, voxelCoordinate);
                     }
-                } else if (playerInput.IsDefend && Hotbar.Selected && Hotbar.Selected is BlockView blockView) {
-                    if (PhysicsSystem.Raycast(blockSystemData, EntityManager, chunkBufferingSystemData, ray, 15.0f, out var hitInfo)) {
+                }
+                else if (playerInput.IsDefend && Hotbar.Selected && Hotbar.Selected is BlockView blockView)
+                {
+                    if (PhysicsSystem.Raycast(blockSystemData, EntityManager, chunkBufferingSystemData, ray, 15.0f, out var hitInfo))
+                    {
                         var voxelCoordinate = (int3)math.floor(hitInfo.point + hitInfo.normal);
                         var blockType = blockView.BlockType;
                         ChunkBufferingSystem.PlaceVoxel(chunkBufferingSystemData, blockSystemData, lightingSystemData, EntityManager, commandBuffer, voxelCoordinate, blockType);

@@ -2,18 +2,22 @@
 using Unity.Collections;
 using UnityEngine.Rendering;
 
-namespace Minecraft {
-    public struct Vertex {
+namespace Minecraft
+{
+    public struct Vertex
+    {
         public uint A;
         public uint B;
 
-        public static NativeArray<VertexAttributeDescriptor> GetDescriptors(Allocator allocator) {
+        public static NativeArray<VertexAttributeDescriptor> GetDescriptors(Allocator allocator)
+        {
             var descriptors = new NativeArray<VertexAttributeDescriptor>(1, allocator);
             descriptors[0] = new VertexAttributeDescriptor(VertexAttribute.TexCoord0, VertexAttributeFormat.UInt32, 2);
             return descriptors;
         }
 
-        public static Vertex Create(int x, int y, int z, int u, int v, int r, int g, int b, int s) {
+        public static Vertex Create(int x, int y, int z, int u, int v, int r, int g, int b, int s)
+        {
             var i = IndexUtility.ToIndex(u, v, 17);
 
             // Layout:
@@ -38,7 +42,8 @@ namespace Minecraft {
             var bsBit = bBit + sBit;
             var gbsBit = gBit + bsBit;
 
-            return new Vertex {
+            return new Vertex
+            {
                 A = (uint)(x << yziBit | y << ziBit | z << iBit | i),
                 B = (uint)(r << gbsBit | g << bsBit | b << sBit | s)
             };

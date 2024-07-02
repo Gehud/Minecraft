@@ -1,9 +1,11 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace Minecraft.UI {
+namespace Minecraft.UI
+{
     [RequireComponent(typeof(TextMeshProUGUI))]
-    public class FPSText : MonoBehaviour {
+    public class FPSText : MonoBehaviour
+    {
         [SerializeField, Min(0.0f)]
         private float updateTime = 0.2f;
 
@@ -11,13 +13,16 @@ namespace Minecraft.UI {
 
         private float lastUpdateTime = 0.0f;
 
-        private void Awake() {
+        private void Awake()
+        {
             text = GetComponent<TextMeshProUGUI>();
         }
 
-        private void Update() {
+        private void Update()
+        {
             var time = Time.time;
-            if (time - lastUpdateTime < updateTime) {
+            if (time - lastUpdateTime < updateTime)
+            {
                 return;
             }
 

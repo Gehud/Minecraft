@@ -8,10 +8,12 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [BurstCompile]
     [UpdateAfter(typeof(ChunkMeshDataSystem))]
-    public partial struct ChunkMeshSystem : ISystem {
+    public partial struct ChunkMeshSystem : ISystem
+    {
         public const MeshUpdateFlags UpdateFlags
             = MeshUpdateFlags.DontRecalculateBounds
             | MeshUpdateFlags.DontResetBoneBounds
@@ -26,7 +28,8 @@ namespace Minecraft {
 
         private NativeArray<VertexAttributeDescriptor> descriptors;
 
-        private struct ScheduledJob {
+        private struct ScheduledJob
+        {
             public ChunkMeshJob Data;
             public JobHandle Handle;
         }
@@ -34,18 +37,21 @@ namespace Minecraft {
         private NativeList<ScheduledJob> jobs;
 
         [BurstCompile]
-        void ISystem.OnCreate(ref SystemState state) {
+        void ISystem.OnCreate(ref SystemState state)
+        {
             descriptors = Vertex.GetDescriptors(Allocator.Persistent);
             jobs = new NativeList<ScheduledJob>(Allocator.Persistent);
         }
 
-        private void ApplyJob(ref SystemState state, in ChunkMeshJob job) {
+        private void ApplyJob(ref SystemState state, in ChunkMeshJob job)
+        {
             var entity = job.Entity;
 
             var mesh = new Mesh();
             Mesh.ApplyAndDisposeWritableMeshData(job.MeshDataArray, mesh, UpdateFlags);
 
-            if (!state.EntityManager.HasComponent<RenderMeshArray>(entity)) {
+            if (!state.EntityManager.HasComponent<RenderMeshArray>(entity))
+            {
                 var materials = new Material[] {
                     state.EntityManager.GetComponentObject<ChunkMeshSystemData>(state.SystemHandle).OpaqueMaterial,
                     state.EntityManager.GetComponentObject<ChunkMeshSystemData>(state.SystemHandle).TransparentMaterial
@@ -63,8 +69,10 @@ namespace Minecraft {
                     MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0, 0)
                 );
 
-                state.EntityManager.SetComponentData(entity, new RenderBounds {
-                    Value = new AABB {
+                state.EntityManager.SetComponentData(entity, new RenderBounds
+                {
+                    Value = new AABB
+                    {
                         Center = new float3(chunkSizeHalf, chunkSizeHalf, chunkSizeHalf),
                         Extents = new float3(chunkSizeHalf, chunkSizeHalf, chunkSizeHalf)
                     }
@@ -73,8 +81,10 @@ namespace Minecraft {
                 var coordinate = state.EntityManager.GetComponentData<Chunk>(entity).Coordinate;
                 var position = coordinate * Chunk.Size;
 
-                state.EntityManager.SetComponentData(entity, new WorldRenderBounds {
-                    Value = new AABB {
+                state.EntityManager.SetComponentData(entity, new WorldRenderBounds
+                {
+                    Value = new AABB
+                    {
                         Center = new float3(chunkSizeHalf, chunkSizeHalf, chunkSizeHalf) + position,
                         Extents = new float3(chunkSizeHalf, chunkSizeHalf, chunkSizeHalf)
                     }
@@ -91,37 +101,47 @@ namespace Minecraft {
                     MaterialMeshInfo.FromRenderMeshArrayIndices(1, 0, 1)
                 );
 
-                state.EntityManager.SetComponentData(rendererEntity, new RenderBounds {
-                    Value = new AABB {
+                state.EntityManager.SetComponentData(rendererEntity, new RenderBounds
+                {
+                    Value = new AABB
+                    {
                         Center = new float3(chunkSizeHalf, chunkSizeHalf, chunkSizeHalf),
                         Extents = new float3(chunkSizeHalf, chunkSizeHalf, chunkSizeHalf)
                     }
                 });
 
-                state.EntityManager.SetComponentData(rendererEntity, new WorldRenderBounds {
-                    Value = new AABB {
+                state.EntityManager.SetComponentData(rendererEntity, new WorldRenderBounds
+                {
+                    Value = new AABB
+                    {
                         Center = new float3(chunkSizeHalf, chunkSizeHalf, chunkSizeHalf) + position,
                         Extents = new float3(chunkSizeHalf, chunkSizeHalf, chunkSizeHalf)
                     }
                 });
 
-                state.EntityManager.AddComponentData(rendererEntity, new LocalToWorld {
+                state.EntityManager.AddComponentData(rendererEntity, new LocalToWorld
+                {
                     Value = float4x4.Translate(position)
                 });
 
                 var buffer = state.EntityManager.AddBuffer<SubChunk>(entity);
-                buffer.Add(new SubChunk {
+                buffer.Add(new SubChunk
+                {
                     Value = rendererEntity
                 });
-            } else {
+            }
+            else
+            {
                 state.EntityManager.GetSharedComponentManaged<RenderMeshArray>(entity).MeshReferences[0] = mesh;
             }
 
             state.EntityManager.RemoveComponent<ChunkMeshData>(entity);
         }
 
-        private bool TryCompleteJob(ref SystemState state, in ScheduledJob job) {
-            if (!job.Handle.IsCompleted) {
+        private bool TryCompleteJob(ref SystemState state, in ScheduledJob job)
+        {
+            if (!job.Handle.IsCompleted)
+            {
                 return false;
             }
 
@@ -133,7 +153,8 @@ namespace Minecraft {
             return true;
         }
 
-        void ISystem.OnUpdate(ref SystemState state) {
+        void ISystem.OnUpdate(ref SystemState state)
+        {
             var querry = SystemAPI.QueryBuilder()
                 .WithAll<ChunkMeshData>()
                 .WithNone<ThreadedChunk>()
@@ -141,34 +162,42 @@ namespace Minecraft {
 
             var entities = querry.ToEntityArray(Allocator.Temp);
 
-            foreach (var entity in entities) {
+            foreach (var entity in entities)
+            {
                 var data = state.EntityManager.GetComponentData<ChunkMeshData>(entity);
 
-                var job = new ChunkMeshJob {
+                var job = new ChunkMeshJob
+                {
                     Entity = entity,
                     MeshData = data,
                     MeshDataArray = Mesh.AllocateWritableMeshData(1),
                     Descriptors = descriptors
                 };
 
-                if (state.EntityManager.IsComponentEnabled<ImmediateChunk>(entity)) {
+                if (state.EntityManager.IsComponentEnabled<ImmediateChunk>(entity))
+                {
                     job.Run();
                     ApplyJob(ref state, job);
                     state.EntityManager.SetComponentEnabled<ImmediateChunk>(entity, false);
-                } else {
+                }
+                else
+                {
                     var handle = job.Schedule();
                     state.EntityManager.SetComponentEnabled<ThreadedChunk>(entity, true);
-                    jobs.Add(new ScheduledJob {
+                    jobs.Add(new ScheduledJob
+                    {
                         Data = job,
                         Handle = handle
                     });
                 }
             }
 
-            for (int i = 0; i < jobs.Length; i++) {
+            for (int i = 0; i < jobs.Length; i++)
+            {
                 var job = jobs[i];
 
-                if (TryCompleteJob(ref state, job)) {
+                if (TryCompleteJob(ref state, job))
+                {
                     jobs.RemoveAt(i);
                 }
             }
@@ -177,8 +206,10 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        void ISystem.OnDestroy(ref SystemState state) {
-            foreach (var job in jobs) {
+        void ISystem.OnDestroy(ref SystemState state)
+        {
+            foreach (var job in jobs)
+            {
                 job.Handle.Complete();
             }
 

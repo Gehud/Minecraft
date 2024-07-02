@@ -1,9 +1,11 @@
 ﻿using Unity.Mathematics;
 using UnityEngine;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [CreateAssetMenu]
-    public class NoiseSettings : ScriptableObject {
+    public class NoiseSettings : ScriptableObject
+    {
         public int3 Offset => offset;
 
         public float3 Scale => scale;

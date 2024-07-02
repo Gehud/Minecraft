@@ -1,9 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Minecraft.Lighting {
+namespace Minecraft.Lighting
+{
     [Serializable]
-    public struct LightColor {
+    public struct LightColor
+    {
         [Range(Light.Min, Light.Max)]
         public byte Red;
         [Range(Light.Min, Light.Max)]

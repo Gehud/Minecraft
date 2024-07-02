@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Minecraft.UI {
+namespace Minecraft.UI
+{
     [RequireComponent(typeof(RectTransform))]
-    public class Hotbar : MonoBehaviour {
+    public class Hotbar : MonoBehaviour
+    {
         public static SlotItem Selected => selected;
         private static SlotItem selected;
 
@@ -19,10 +21,12 @@ namespace Minecraft.UI {
 
         private int position;
 
-        private void UpdateSelected() {
+        private void UpdateSelected()
+        {
             var slot = slotContainer.GetChild(position);
 
-            if (slot.childCount == 0) {
+            if (slot.childCount == 0)
+            {
                 selected = null;
                 return;
             }
@@ -31,9 +35,11 @@ namespace Minecraft.UI {
             selected = item.SlotItem;
         }
 
-        private void OnItemDrop(SlotItem item) {
+        private void OnItemDrop(SlotItem item)
+        {
             var coordinate = inventory.GetCoordinate(item.Slot);
-            if (coordinate.y != 0) {
+            if (coordinate.y != 0)
+            {
                 return;
             }
 
@@ -42,7 +48,8 @@ namespace Minecraft.UI {
             Destroy(clone.GetComponent<SlotItem>());
             var hotbarItem = clone.gameObject.AddComponent<HotbarItem>();
             hotbarItem.SlotItem = item;
-            if (slot.childCount != 0) {
+            if (slot.childCount != 0)
+            {
                 Destroy(slot.GetChild(0).gameObject);
             }
 
@@ -52,73 +59,88 @@ namespace Minecraft.UI {
             UpdateSelected();
         }
 
-        private void OnItemDrag(SlotItem item) {
+        private void OnItemDrag(SlotItem item)
+        {
             var coordinate = inventory.GetCoordinate(item.Slot);
-            if (coordinate.y != 0) {
+            if (coordinate.y != 0)
+            {
                 return;
             }
 
             var slot = slotContainer.GetChild(coordinate.x);
-            if (slot.childCount != 0) {
+            if (slot.childCount != 0)
+            {
                 Destroy(slot.GetChild(0).gameObject);
             }
 
             UpdateSelected();
         }
 
-        private void MoveCursor(int position) {
+        private void MoveCursor(int position)
+        {
             this.position = position;
             cursor.anchoredPosition = position * slotSize * Vector2.right;
             UpdateSelected();
         }
 
-        private bool HandleKeyboardWalk() {
+        private bool HandleKeyboardWalk()
+        {
             var keyboard = Keyboard.current;
-            if (keyboard == null) {
+            if (keyboard == null)
+            {
                 return false;
             }
 
-            if (keyboard[Key.Digit1].wasPressedThisFrame) {
+            if (keyboard[Key.Digit1].wasPressedThisFrame)
+            {
                 MoveCursor(0);
                 return true;
             }
 
-            if (keyboard[Key.Digit2].wasPressedThisFrame) {
+            if (keyboard[Key.Digit2].wasPressedThisFrame)
+            {
                 MoveCursor(1);
                 return true;
             }
 
-            if (keyboard[Key.Digit3].wasPressedThisFrame) {
+            if (keyboard[Key.Digit3].wasPressedThisFrame)
+            {
                 MoveCursor(2);
                 return true;
             }
 
-            if (keyboard[Key.Digit4].wasPressedThisFrame) {
+            if (keyboard[Key.Digit4].wasPressedThisFrame)
+            {
                 MoveCursor(3);
                 return true;
             }
 
-            if (keyboard[Key.Digit5].wasPressedThisFrame) {
+            if (keyboard[Key.Digit5].wasPressedThisFrame)
+            {
                 MoveCursor(4);
                 return true;
             }
 
-            if (keyboard[Key.Digit6].wasPressedThisFrame) {
+            if (keyboard[Key.Digit6].wasPressedThisFrame)
+            {
                 MoveCursor(5);
                 return true;
             }
 
-            if (keyboard[Key.Digit7].wasPressedThisFrame) {
+            if (keyboard[Key.Digit7].wasPressedThisFrame)
+            {
                 MoveCursor(6);
                 return true;
             }
 
-            if (keyboard[Key.Digit8].wasPressedThisFrame) {
+            if (keyboard[Key.Digit8].wasPressedThisFrame)
+            {
                 MoveCursor(7);
                 return true;
             }
 
-            if (keyboard[Key.Digit9].wasPressedThisFrame) {
+            if (keyboard[Key.Digit9].wasPressedThisFrame)
+            {
                 MoveCursor(8);
                 return true;
             }
@@ -126,25 +148,32 @@ namespace Minecraft.UI {
             return false;
         }
 
-        private bool HandleMouseWalk() {
+        private bool HandleMouseWalk()
+        {
             var mouse = Mouse.current;
-            if (mouse == null) {
+            if (mouse == null)
+            {
                 return false;
             }
 
             var newPosition = position;
             var scroll = mouse.scroll.value.y;
-            if (scroll > 0.0f) {
+            if (scroll > 0.0f)
+            {
                 --newPosition;
-                if (newPosition < 0) {
+                if (newPosition < 0)
+                {
                     newPosition = slotCount - 1;
                 }
 
                 MoveCursor(newPosition);
                 return true;
-            } else if (scroll < 0.0f) {
+            }
+            else if (scroll < 0.0f)
+            {
                 ++newPosition;
-                if (newPosition >= slotCount) {
+                if (newPosition >= slotCount)
+                {
                     newPosition = 0;
                 }
 
@@ -155,31 +184,38 @@ namespace Minecraft.UI {
             return false;
         }
 
-        private void Awake() {
+        private void Awake()
+        {
             MoveCursor(0);
         }
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             SlotItem.OnDrop += OnItemDrop;
             SlotItem.OnDrag += OnItemDrag;
         }
 
-        private void OnDisable() {
+        private void OnDisable()
+        {
             SlotItem.OnDrop -= OnItemDrop;
             SlotItem.OnDrag -= OnItemDrag;
         }
 
-        private void Update() {
-            if (HandleKeyboardWalk()) {
+        private void Update()
+        {
+            if (HandleKeyboardWalk())
+            {
                 return;
             }
 
-            if (HandleMouseWalk()) {
+            if (HandleMouseWalk())
+            {
                 return;
             }
         }
 
-        private void OnDestroy() {
+        private void OnDestroy()
+        {
             selected = null;
         }
     }

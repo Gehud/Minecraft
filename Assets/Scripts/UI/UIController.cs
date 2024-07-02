@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Minecraft.UI {
-    public class UIController : MonoBehaviour {
+namespace Minecraft.UI
+{
+    public class UIController : MonoBehaviour
+    {
         [SerializeField]
         private GameObject inventory;
         [SerializeField]
@@ -9,21 +11,25 @@ namespace Minecraft.UI {
 
         private Controls controls;
 
-        private void Toggle(GameObject gameObject) {
+        private void Toggle(GameObject gameObject)
+        {
             gameObject.SetActive(!gameObject.activeSelf);
         }
 
-        private void Awake() {
+        private void Awake()
+        {
             controls = new();
             controls.UI.Inventory.performed += (_) => Toggle(inventory);
             controls.UI.DebugMonitor.performed += (_) => Toggle(debugMonitor);
         }
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             controls.Enable();
         }
 
-        private void OnDisable() {
+        private void OnDisable()
+        {
             controls.Disable();
         }
     }

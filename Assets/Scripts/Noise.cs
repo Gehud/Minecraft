@@ -2,8 +2,10 @@
 using Unity.Collections;
 using Unity.Mathematics;
 
-namespace Minecraft {
-    public struct Noise : IDisposable {
+namespace Minecraft
+{
+    public struct Noise : IDisposable
+    {
         public int3 Offset;
         public float3 Scale;
         public int Octaves;
@@ -11,7 +13,8 @@ namespace Minecraft {
         public float Persistance;
         public NativeCurve Modification;
 
-        public Noise(NoiseSettings settings, Allocator allocator) {
+        public Noise(NoiseSettings settings, Allocator allocator)
+        {
             Offset = settings.Offset;
             Scale = settings.Scale;
             Octaves = settings.Octaves;
@@ -20,14 +23,17 @@ namespace Minecraft {
             Modification = new NativeCurve(settings.Modification, allocator);
         }
 
-        public float Sample2D(float x, float y) {
+        public float Sample2D(float x, float y)
+        {
             var result = 0.0f;
             var frequency = 1.0f;
             var amplitude = 1.0f;
             var amplitudeSum = 0.0f;
 
-            for (int i = 0; i < Octaves; i++) {
-                var position = new float2 {
+            for (int i = 0; i < Octaves; i++)
+            {
+                var position = new float2
+                {
                     x = (x + Offset.x) * Scale.x * frequency,
                     y = (y + Offset.y) * Scale.y * frequency
                 };
@@ -41,7 +47,8 @@ namespace Minecraft {
             return Modification.Evaluate(result / amplitudeSum);
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Modification.Dispose();
         }
     }

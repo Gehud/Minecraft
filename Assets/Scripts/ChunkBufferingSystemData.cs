@@ -3,8 +3,10 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Minecraft {
-    public struct ChunkBufferingSystemData : IComponentData, IDisposable {
+namespace Minecraft
+{
+    public struct ChunkBufferingSystemData : IComponentData, IDisposable
+    {
         public int2 Center;
         public int Height;
         public int DrawDistance;
@@ -13,7 +15,8 @@ namespace Minecraft {
         public NativeArray<Entity> Chunks;
         public NativeArray<Entity> ChunksBuffer;
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Chunks.Dispose();
             ChunksBuffer.Dispose();
         }

@@ -1,17 +1,21 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 
-namespace Minecraft.Player {
-    public partial class PlayerInputSystem : SystemBase {
+namespace Minecraft.Player
+{
+    public partial class PlayerInputSystem : SystemBase
+    {
         private Controls controls;
 
-        protected override void OnCreate() {
+        protected override void OnCreate()
+        {
             EntityManager.AddComponent<PlayerInput>(SystemHandle);
             controls = new();
             controls.Enable();
         }
 
-        protected override void OnUpdate() {
+        protected override void OnUpdate()
+        {
             var playerInput = EntityManager.GetComponentDataRW<PlayerInput>(SystemHandle);
             playerInput.ValueRW.Movement = controls.Player.Move.ReadValue<Vector2>();
             playerInput.ValueRW.Look = controls.Player.Look.ReadValue<Vector2>();

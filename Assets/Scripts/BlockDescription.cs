@@ -3,9 +3,11 @@ using System;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [Serializable]
-    public struct Texturing {
+    public struct Texturing
+    {
         public int2 Right;
         public int2 Left;
         public int2 Top;
@@ -15,7 +17,8 @@ namespace Minecraft {
     }
 
     [CreateAssetMenu]
-    public class BlockDescription : ScriptableObject {
+    public class BlockDescription : ScriptableObject
+    {
         public Texturing Texturing => texturing;
 
         public bool IsSolid => isSolid;

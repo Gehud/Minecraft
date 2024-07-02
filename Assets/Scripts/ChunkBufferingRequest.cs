@@ -1,7 +1,9 @@
 ﻿using Unity.Entities;
 
-namespace Minecraft {
-    public struct ChunkBufferingRequest : IComponentData {
+namespace Minecraft
+{
+    public struct ChunkBufferingRequest : IComponentData
+    {
         public int NewDrawDistance;
     }
 }

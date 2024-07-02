@@ -6,9 +6,11 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [BurstCompile]
-    public struct ChunkGenerationJob : IJobFor {
+    public struct ChunkGenerationJob : IJobFor
+    {
         [ReadOnly]
         public Entity Entity;
         [ReadOnly]
@@ -24,7 +26,8 @@ namespace Minecraft {
         [ReadOnly]
         public int WaterLevel;
 
-        public void Execute(int index) {
+        public void Execute(int index)
+        {
             var localCoordinate = IndexUtility.ToCoordinate(index, Chunk.Size, Chunk.Size);
             var coordinate = Coordinate * Chunk.Size + localCoordinate;
 
@@ -34,15 +37,23 @@ namespace Minecraft {
             var result = continentalness * erosion * peaksAndValleys;
 
             int height = (int)result;
-            if (coordinate.y <= height) {
-                if (coordinate.y == height) {
+            if (coordinate.y <= height)
+            {
+                if (coordinate.y == height)
+                {
                     Voxels[index] = new Voxel(BlockType.Grass);
-                } else if (coordinate.y >= height - 4) {
+                }
+                else if (coordinate.y >= height - 4)
+                {
                     Voxels[index] = new Voxel(BlockType.Dirt);
-                } else {
+                }
+                else
+                {
                     Voxels[index] = new Voxel(BlockType.Stone);
                 }
-            } else if (coordinate.y <= WaterLevel) {
+            }
+            else if (coordinate.y <= WaterLevel)
+            {
                 Voxels[index] = new Voxel(BlockType.Water);
             }
         }

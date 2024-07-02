@@ -3,12 +3,15 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [BurstCompile]
     [RequireMatchingQueriesForUpdate]
     [UpdateAfter(typeof(ChunkSpawnSystem))]
-    public partial struct ChunkGenerationSystem : ISystem {
-        private struct ScheduledJob {
+    public partial struct ChunkGenerationSystem : ISystem
+    {
+        private struct ScheduledJob
+        {
             public ChunkGenerationJob Data;
             public JobHandle Handle;
         }
@@ -16,21 +19,25 @@ namespace Minecraft {
         private NativeList<ScheduledJob> jobs;
 
         [BurstCompile]
-        void ISystem.OnCreate(ref SystemState state) { 
+        void ISystem.OnCreate(ref SystemState state)
+        {
             jobs = new NativeList<ScheduledJob>(Allocator.Persistent);
         }
 
         [BurstCompile]
-        void ISystem.OnUpdate(ref SystemState state) {
+        void ISystem.OnUpdate(ref SystemState state)
+        {
             var systemData = state.EntityManager.GetComponentDataRW<ChunkGenerationSystemData>(state.SystemHandle);
 
             foreach (var (chunk, entity) in SystemAPI
                 .Query<RefRW<Chunk>>()
                 .WithAll<RawChunk>()
                 .WithNone<ThreadedChunk>()
-                .WithEntityAccess()) {
+                .WithEntityAccess())
+            {
 
-                var job = new ChunkGenerationJob {
+                var job = new ChunkGenerationJob
+                {
                     Entity = entity,
                     Coordinate = chunk.ValueRO.Coordinate,
                     Voxels = chunk.ValueRO.Voxels,
@@ -42,7 +49,8 @@ namespace Minecraft {
 
                 var handle = job.ScheduleParallel(Chunk.Volume, Chunk.Size, default);
 
-                jobs.Add(new ScheduledJob {
+                jobs.Add(new ScheduledJob
+                {
                     Data = job,
                     Handle = handle
                 });
@@ -52,10 +60,12 @@ namespace Minecraft {
 
             var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
 
-            for (int i = 0; i < jobs.Length; i++) {
+            for (int i = 0; i < jobs.Length; i++)
+            {
                 var job = jobs[i];
 
-                if (TryCompleteJob(job, state.EntityManager, commandBuffer)) {
+                if (TryCompleteJob(job, state.EntityManager, commandBuffer))
+                {
                     jobs.RemoveAt(i);
                 }
             }
@@ -65,8 +75,10 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        private bool TryCompleteJob(in ScheduledJob job, in EntityManager entityManager, in EntityCommandBuffer commandBuffer) {
-            if (!job.Handle.IsCompleted) {
+        private bool TryCompleteJob(in ScheduledJob job, in EntityManager entityManager, in EntityCommandBuffer commandBuffer)
+        {
+            if (!job.Handle.IsCompleted)
+            {
                 return false;
             }
 
@@ -76,10 +88,11 @@ namespace Minecraft {
             entityManager.SetComponentEnabled<ThreadedChunk>(job.Data.Entity, false);
 
             return true;
-        } 
+        }
 
         [BurstCompile]
-        void ISystem.OnDestroy(ref SystemState state) {
+        void ISystem.OnDestroy(ref SystemState state)
+        {
             jobs.Dispose();
         }
     }

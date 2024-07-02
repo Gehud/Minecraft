@@ -1,6 +1,7 @@
 ﻿using Minecraft.Lighting;
 using Minecraft.Player;
 using Minecraft.Utilities;
+using System.Resources;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
@@ -8,15 +9,19 @@ using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [BurstCompile]
     [UpdateBefore(typeof(ChunkSpawnSystem))]
-    public partial struct ChunkBufferingSystem : ISystem {
+    public partial struct ChunkBufferingSystem : ISystem
+    {
         public const int BufferDistance = 1;
 
         [BurstCompile]
-        public static int ToIndex(in ChunkBufferingSystemData systemData, in int3 coordinate) {
-            var arrayCoordinate = new int3 {
+        public static int ToIndex(in ChunkBufferingSystemData systemData, in int3 coordinate)
+        {
+            var arrayCoordinate = new int3
+            {
                 x = coordinate.x - systemData.Center.x + systemData.DrawDistance + BufferDistance,
                 y = coordinate.y,
                 z = coordinate.z - systemData.Center.y + systemData.DrawDistance + BufferDistance
@@ -26,7 +31,8 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        private static bool IsOutOfBuffer(in ChunkBufferingSystemData systemData, in int3 arrayCoordinate) {
+        private static bool IsOutOfBuffer(in ChunkBufferingSystemData systemData, in int3 arrayCoordinate)
+        {
             return arrayCoordinate.x < 0
                 || arrayCoordinate.y < 0
                 || arrayCoordinate.z < 0
@@ -36,14 +42,17 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        public static void GetEntity(in ChunkBufferingSystemData systemData, in int3 coordinate, out Entity entity) {
-            var arrayCoordinate = new int3 {
+        public static void GetEntity(in ChunkBufferingSystemData systemData, in int3 coordinate, out Entity entity)
+        {
+            var arrayCoordinate = new int3
+            {
                 x = coordinate.x - systemData.Center.x + systemData.DrawDistance + BufferDistance,
                 y = coordinate.y,
                 z = coordinate.z - systemData.Center.y + systemData.DrawDistance + BufferDistance
             };
 
-            if (IsOutOfBuffer(systemData, arrayCoordinate)) {
+            if (IsOutOfBuffer(systemData, arrayCoordinate))
+            {
                 entity = Entity.Null;
                 return;
             }
@@ -53,14 +62,17 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        public static bool TryGetEntity(in ChunkBufferingSystemData systemData, in int3 chunkCoordinate, out Entity entity) {
+        public static bool TryGetEntity(in ChunkBufferingSystemData systemData, in int3 chunkCoordinate, out Entity entity)
+        {
             GetEntity(systemData, chunkCoordinate, out entity);
             return entity != Entity.Null;
         }
 
         [BurstCompile]
-        public static void GetVoxel(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 coordinate, out Voxel voxel) {
-            var chunkCoordinate = new int3 {
+        public static void GetVoxel(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 coordinate, out Voxel voxel)
+        {
+            var chunkCoordinate = new int3
+            {
                 x = (int)math.floor(coordinate.x / (float)Chunk.Size),
                 y = (int)math.floor(coordinate.y / (float)Chunk.Size),
                 z = (int)math.floor(coordinate.z / (float)Chunk.Size)
@@ -70,7 +82,8 @@ namespace Minecraft {
             if (entity == Entity.Null
                 || !entityManager.HasComponent<Chunk>(entity)
                 //|| entityManager.IsComponentEnabled<ThreadedChunk>(entity)
-                || entityManager.HasComponent<RawChunk>(entity)) {
+                || entityManager.HasComponent<RawChunk>(entity))
+            {
                 voxel = default;
                 return;
             }
@@ -81,9 +94,11 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        private static void MarkDirtyIfExistsImmediate(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 chunkCoordinate) {
+        private static void MarkDirtyIfExistsImmediate(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 chunkCoordinate)
+        {
             GetEntity(systemData, chunkCoordinate, out var entity);
-            if (entity == Entity.Null || !entityManager.HasComponent<Chunk>(entity)) {
+            if (entity == Entity.Null || !entityManager.HasComponent<Chunk>(entity))
+            {
                 return;
             }
 
@@ -92,9 +107,11 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        private static void MarkDirtyIfExistsImmediate(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 chunkCoordinate) {
+        private static void MarkDirtyIfExistsImmediate(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 chunkCoordinate)
+        {
             GetEntity(systemData, chunkCoordinate, out var entity);
-            if (entity == Entity.Null || !entityManager.HasComponent<Chunk>(entity)) {
+            if (entity == Entity.Null || !entityManager.HasComponent<Chunk>(entity))
+            {
                 return;
             }
 
@@ -103,9 +120,11 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        private static void MarkDirtyIfExists(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 chunkCoordinate) {
+        private static void MarkDirtyIfExists(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 chunkCoordinate)
+        {
             GetEntity(systemData, chunkCoordinate, out var entity);
-            if (entity == Entity.Null || !entityManager.HasComponent<Chunk>(entity)) {
+            if (entity == Entity.Null || !entityManager.HasComponent<Chunk>(entity))
+            {
                 return;
             }
 
@@ -113,9 +132,11 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        private static void MarkDirtyIfExists(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 chunkCoordinate) {
+        private static void MarkDirtyIfExists(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 chunkCoordinate)
+        {
             GetEntity(systemData, chunkCoordinate, out var entity);
-            if (entity == Entity.Null || !entityManager.HasComponent<Chunk>(entity) || entityManager.IsComponentEnabled<DirtyChunk>(entity)) {
+            if (entity == Entity.Null || !entityManager.HasComponent<Chunk>(entity) || entityManager.IsComponentEnabled<DirtyChunk>(entity))
+            {
                 return;
             }
 
@@ -123,116 +144,146 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        public static void MarkDirtyIfNeededImmediate(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 chunkCoordinate, in int3 localVoxelCoordinate) {
-            if (localVoxelCoordinate.x == 0) {
+        public static void MarkDirtyIfNeededImmediate(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 chunkCoordinate, in int3 localVoxelCoordinate)
+        {
+            if (localVoxelCoordinate.x == 0)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, chunkCoordinate + new int3(-1, 0, 0));
             }
 
-            if (localVoxelCoordinate.y == 0) {
+            if (localVoxelCoordinate.y == 0)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, chunkCoordinate + new int3(0, -1, 0));
             }
 
-            if (localVoxelCoordinate.z == 0) {
+            if (localVoxelCoordinate.z == 0)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, chunkCoordinate + new int3(0, 0, -1));
             }
 
-            if (localVoxelCoordinate.x == Chunk.Size - 1) {
+            if (localVoxelCoordinate.x == Chunk.Size - 1)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, chunkCoordinate + new int3(1, 0, 0));
             }
 
-            if (localVoxelCoordinate.y == Chunk.Size - 1) {
+            if (localVoxelCoordinate.y == Chunk.Size - 1)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, chunkCoordinate + new int3(0, 1, 0));
             }
 
-            if (localVoxelCoordinate.z == Chunk.Size - 1) {
+            if (localVoxelCoordinate.z == Chunk.Size - 1)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, chunkCoordinate + new int3(0, 0, 1));
             }
         }
 
         [BurstCompile]
-        public static void MarkDirtyIfNeededImmediate(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 chunkCoordinate, in int3 localVoxelCoordinate) {
-            if (localVoxelCoordinate.x == 0) {
+        public static void MarkDirtyIfNeededImmediate(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 chunkCoordinate, in int3 localVoxelCoordinate)
+        {
+            if (localVoxelCoordinate.x == 0)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(-1, 0, 0));
             }
 
-            if (localVoxelCoordinate.y == 0) {
+            if (localVoxelCoordinate.y == 0)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(0, -1, 0));
             }
 
-            if (localVoxelCoordinate.z == 0) {
+            if (localVoxelCoordinate.z == 0)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(0, 0, -1));
             }
 
-            if (localVoxelCoordinate.x == Chunk.Size - 1) {
+            if (localVoxelCoordinate.x == Chunk.Size - 1)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(1, 0, 0));
             }
 
-            if (localVoxelCoordinate.y == Chunk.Size - 1) {
+            if (localVoxelCoordinate.y == Chunk.Size - 1)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(0, 1, 0));
             }
 
-            if (localVoxelCoordinate.z == Chunk.Size - 1) {
+            if (localVoxelCoordinate.z == Chunk.Size - 1)
+            {
                 MarkDirtyIfExistsImmediate(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(0, 0, 1));
             }
         }
 
         [BurstCompile]
-        public static void MarkDirtyIfNeeded(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 chunkCoordinate, in int3 localVoxelCoordinate) {
-            if (localVoxelCoordinate.x == 0) {
+        public static void MarkDirtyIfNeeded(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in int3 chunkCoordinate, in int3 localVoxelCoordinate)
+        {
+            if (localVoxelCoordinate.x == 0)
+            {
                 MarkDirtyIfExists(systemData, entityManager, chunkCoordinate + new int3(-1, 0, 0));
             }
 
-            if (localVoxelCoordinate.y == 0) {
+            if (localVoxelCoordinate.y == 0)
+            {
                 MarkDirtyIfExists(systemData, entityManager, chunkCoordinate + new int3(0, -1, 0));
             }
 
-            if (localVoxelCoordinate.z == 0) {
+            if (localVoxelCoordinate.z == 0)
+            {
                 MarkDirtyIfExists(systemData, entityManager, chunkCoordinate + new int3(0, 0, -1));
             }
 
-            if (localVoxelCoordinate.x == Chunk.Size - 1) {
+            if (localVoxelCoordinate.x == Chunk.Size - 1)
+            {
                 MarkDirtyIfExists(systemData, entityManager, chunkCoordinate + new int3(1, 0, 0));
             }
 
-            if (localVoxelCoordinate.y == Chunk.Size - 1) {
+            if (localVoxelCoordinate.y == Chunk.Size - 1)
+            {
                 MarkDirtyIfExists(systemData, entityManager, chunkCoordinate + new int3(0, 1, 0));
             }
 
-            if (localVoxelCoordinate.z == Chunk.Size - 1) {
+            if (localVoxelCoordinate.z == Chunk.Size - 1)
+            {
                 MarkDirtyIfExists(systemData, entityManager, chunkCoordinate + new int3(0, 0, 1));
             }
         }
 
         [BurstCompile]
-        public static void MarkDirtyIfNeeded(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 chunkCoordinate, in int3 localVoxelCoordinate) {
-            if (localVoxelCoordinate.x == 0) {
+        public static void MarkDirtyIfNeeded(in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 chunkCoordinate, in int3 localVoxelCoordinate)
+        {
+            if (localVoxelCoordinate.x == 0)
+            {
                 MarkDirtyIfExists(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(-1, 0, 0));
             }
 
-            if (localVoxelCoordinate.y == 0) {
+            if (localVoxelCoordinate.y == 0)
+            {
                 MarkDirtyIfExists(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(0, -1, 0));
             }
 
-            if (localVoxelCoordinate.z == 0) {
+            if (localVoxelCoordinate.z == 0)
+            {
                 MarkDirtyIfExists(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(0, 0, -1));
             }
 
-            if (localVoxelCoordinate.x == Chunk.Size - 1) {
+            if (localVoxelCoordinate.x == Chunk.Size - 1)
+            {
                 MarkDirtyIfExists(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(1, 0, 0));
             }
 
-            if (localVoxelCoordinate.y == Chunk.Size - 1) {
+            if (localVoxelCoordinate.y == Chunk.Size - 1)
+            {
                 MarkDirtyIfExists(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(0, 1, 0));
             }
 
-            if (localVoxelCoordinate.z == Chunk.Size - 1) {
+            if (localVoxelCoordinate.z == Chunk.Size - 1)
+            {
                 MarkDirtyIfExists(systemData, entityManager, commandBuffer, chunkCoordinate + new int3(0, 0, 1));
             }
         }
 
         [BurstCompile]
-        public static void DestroyVoxel(in ChunkBufferingSystemData systemData, in BlockSystemData blockSystemData, in LightingSystemData lightingSystemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 voxelCoordinate) {
-            var chunkCoordinate = new int3 {
+        public static void DestroyVoxel(in ChunkBufferingSystemData systemData, in BlockSystemData blockSystemData, in LightingSystemData lightingSystemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 voxelCoordinate)
+        {
+            var chunkCoordinate = new int3
+            {
                 x = (int)math.floor(voxelCoordinate.x / (float)Chunk.Size),
                 y = (int)math.floor(voxelCoordinate.y / (float)Chunk.Size),
                 z = (int)math.floor(voxelCoordinate.z / (float)Chunk.Size)
@@ -245,7 +296,8 @@ namespace Minecraft {
                 || entityManager.HasComponent<RawChunk>(entity)
                 || !entityManager.HasComponent<Sunlight>(entity)
                 || entityManager.HasComponent<IncompleteLighting>(entity)
-                || entityManager.HasComponent<RawChunk>(entity)) {
+                || entityManager.HasComponent<RawChunk>(entity))
+            {
                 return;
             }
 
@@ -268,11 +320,14 @@ namespace Minecraft {
             LightingSystem.Calculate(lightingSystemData, blockSystemData, systemData, entityManager, commandBuffer, LightChanel.Blue);
 
             GetVoxel(systemData, entityManager, voxelCoordinate + new int3(0, 1, 0), out var topVoxel);
-            if (topVoxel.Type == BlockType.Air && topVoxel.Light.Sun == Light.Max) {
-                for (int y = voxelCoordinate.y; y >= 0; y--) {
+            if (topVoxel.Type == BlockType.Air && topVoxel.Light.Sun == Light.Max)
+            {
+                for (int y = voxelCoordinate.y; y >= 0; y--)
+                {
                     var bottomVoxelCoordinate = new int3(voxelCoordinate.x, y, voxelCoordinate.z);
                     GetVoxel(systemData, entityManager, bottomVoxelCoordinate, out var bottomVoxel);
-                    if (bottomVoxel.Type != BlockType.Air) {
+                    if (bottomVoxel.Type != BlockType.Air)
+                    {
                         break;
                     }
 
@@ -314,7 +369,8 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        public static void PlaceVoxel(in ChunkBufferingSystemData systemData, in BlockSystemData blockSystemData, in LightingSystemData lightingSystemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 voxelCoordinate, BlockType blockType) {
+        public static void PlaceVoxel(in ChunkBufferingSystemData systemData, in BlockSystemData blockSystemData, in LightingSystemData lightingSystemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int3 voxelCoordinate, BlockType blockType)
+        {
             var chunkCoordinate = CoordinateUtility.ToChunk(voxelCoordinate);
 
             GetEntity(systemData, chunkCoordinate, out var entity);
@@ -324,7 +380,8 @@ namespace Minecraft {
                 || entityManager.HasComponent<RawChunk>(entity)
                 || !entityManager.HasComponent<Sunlight>(entity)
                 || entityManager.HasComponent<IncompleteLighting>(entity)
-                || entityManager.HasComponent<RawChunk>(entity)) {
+                || entityManager.HasComponent<RawChunk>(entity))
+            {
                 return;
             }
 
@@ -344,10 +401,12 @@ namespace Minecraft {
             LightingSystem.RemoveLight(lightingSystemData, systemData, entityManager, commandBuffer, voxelCoordinate, LightChanel.Blue);
             LightingSystem.RemoveLight(lightingSystemData, systemData, entityManager, commandBuffer, voxelCoordinate, LightChanel.Sun);
 
-            for (int y = voxelCoordinate.y - 1; y >= 0; y--) {
+            for (int y = voxelCoordinate.y - 1; y >= 0; y--)
+            {
                 var bottomVoxelCoordinate = new int3(voxelCoordinate.x, y, voxelCoordinate.z);
                 GetVoxel(systemData, entityManager, bottomVoxelCoordinate, out var bottomVoxel);
-                if (!blockSystemData.Blocks[(int)bottomVoxel.Type].IsTransparent) {
+                if (!blockSystemData.Blocks[(int)bottomVoxel.Type].IsTransparent)
+                {
                     break;
                 }
 
@@ -361,24 +420,28 @@ namespace Minecraft {
 
             var emission = blockSystemData.Blocks[(int)blockType].Emission;
 
-            if (emission.Red != 0) {
+            if (emission.Red != 0)
+            {
                 LightingSystem.AddLight(lightingSystemData, systemData, entityManager, commandBuffer, voxelCoordinate, LightChanel.Red, emission.Red);
                 LightingSystem.Calculate(lightingSystemData, blockSystemData, systemData, entityManager, commandBuffer, LightChanel.Red);
             }
 
-            if (emission.Green != 0) {
+            if (emission.Green != 0)
+            {
                 LightingSystem.AddLight(lightingSystemData, systemData, entityManager, commandBuffer, voxelCoordinate, LightChanel.Green, emission.Green);
                 LightingSystem.Calculate(lightingSystemData, blockSystemData, systemData, entityManager, commandBuffer, LightChanel.Green);
             }
 
-            if (emission.Blue != 0) {
+            if (emission.Blue != 0)
+            {
                 LightingSystem.AddLight(lightingSystemData, systemData, entityManager, commandBuffer, voxelCoordinate, LightChanel.Blue, emission.Blue);
                 LightingSystem.Calculate(lightingSystemData, blockSystemData, systemData, entityManager, commandBuffer, LightChanel.Blue);
             }
         }
 
         [BurstCompile]
-        private static bool IsOutOfBuffer(int x, int z, int size) {
+        private static bool IsOutOfBuffer(int x, int z, int size)
+        {
             return x < 0
                 || z < 0
                 || x >= size
@@ -386,7 +449,8 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        private static void UpdateMetrics(ref ChunkBufferingSystemData systemData, int newDrawDistance) {
+        private static void UpdateMetrics(ref ChunkBufferingSystemData systemData, int newDrawDistance)
+        {
             var oldChunksSize = systemData.ChunksSize;
             var oldChunks = systemData.Chunks;
             systemData.DrawDistance = newDrawDistance;
@@ -394,26 +458,32 @@ namespace Minecraft {
             var chunksVolume = systemData.ChunksSize * systemData.ChunksSize * systemData.Height;
 
             systemData.Chunks = new NativeArray<Entity>(chunksVolume, Allocator.Persistent);
-            if (systemData.ChunksBuffer.IsCreated) {
+            if (systemData.ChunksBuffer.IsCreated)
+            {
                 systemData.ChunksBuffer.Dispose();
             }
 
             systemData.ChunksBuffer = new NativeArray<Entity>(chunksVolume, Allocator.Persistent);
 
             var sideDelta = oldChunksSize - systemData.ChunksSize;
-            for (int x = 0; x < oldChunksSize; x++) {
-                for (int z = 0; z < oldChunksSize; z++) {
-                    for (int y = 0; y < systemData.Height; y++) {
+            for (int x = 0; x < oldChunksSize; x++)
+            {
+                for (int z = 0; z < oldChunksSize; z++)
+                {
+                    for (int y = 0; y < systemData.Height; y++)
+                    {
                         var index = IndexUtility.ToIndex(x, y, z, oldChunksSize, systemData.Height);
 
                         var chunk = oldChunks[index];
-                        if (chunk == Entity.Null) {
+                        if (chunk == Entity.Null)
+                        {
                             continue;
                         }
 
                         int newX = x - sideDelta / 2;
                         int newZ = z - sideDelta / 2;
-                        if (IsOutOfBuffer(newX, newZ, systemData.ChunksSize)) {
+                        if (IsOutOfBuffer(newX, newZ, systemData.ChunksSize))
+                        {
                             continue;
                         }
 
@@ -422,18 +492,23 @@ namespace Minecraft {
                 }
             }
 
-            if (oldChunks.IsCreated) {
+            if (oldChunks.IsCreated)
+            {
                 oldChunks.Dispose();
             }
         }
 
         [BurstCompile]
-        public static void DestroyChunk(in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in Entity chunkEntity) {
+        public static void DestroyChunk(in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in Entity chunkEntity)
+        {
             commandBuffer.DestroyEntity(chunkEntity);
-            if (entityManager.HasBuffer<SubChunk>(chunkEntity)) {
+            if (entityManager.HasBuffer<SubChunk>(chunkEntity))
+            {
                 var subchunks = entityManager.GetBuffer<SubChunk>(chunkEntity);
-                foreach (var subchunk in subchunks) {
-                    if (entityManager.Exists(subchunk.Value)) {
+                foreach (var subchunk in subchunks)
+                {
+                    if (entityManager.Exists(subchunk.Value))
+                    {
                         commandBuffer.DestroyEntity(subchunk.Value);
                     }
                 }
@@ -441,14 +516,19 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        public static void HideChunk(in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in Entity chunkEntity) {
-            if (!entityManager.HasComponent<DisableRendering>(chunkEntity)) {
+        public static void HideChunk(in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in Entity chunkEntity)
+        {
+            if (!entityManager.HasComponent<DisableRendering>(chunkEntity))
+            {
                 commandBuffer.AddComponent<DisableRendering>(chunkEntity);
 
-                if (entityManager.HasBuffer<SubChunk>(chunkEntity)) {
+                if (entityManager.HasBuffer<SubChunk>(chunkEntity))
+                {
                     var subchunks = entityManager.GetBuffer<SubChunk>(chunkEntity);
-                    foreach (var subchunk in subchunks) {
-                        if (!entityManager.HasComponent<DisableRendering>(subchunk.Value)) {
+                    foreach (var subchunk in subchunks)
+                    {
+                        if (!entityManager.HasComponent<DisableRendering>(subchunk.Value))
+                        {
                             commandBuffer.AddComponent<DisableRendering>(subchunk.Value);
                         }
                     }
@@ -457,14 +537,19 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        public static void ShowChunk(in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in Entity chunkEntity) {
-            if (entityManager.HasComponent<DisableRendering>(chunkEntity)) {
+        public static void ShowChunk(in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in Entity chunkEntity)
+        {
+            if (entityManager.HasComponent<DisableRendering>(chunkEntity))
+            {
                 commandBuffer.RemoveComponent<DisableRendering>(chunkEntity);
 
-                if (entityManager.HasBuffer<SubChunk>(chunkEntity)) {
+                if (entityManager.HasBuffer<SubChunk>(chunkEntity))
+                {
                     var subchunks = entityManager.GetBuffer<SubChunk>(chunkEntity);
-                    foreach (var subchunk in subchunks) {
-                        if (entityManager.HasComponent<DisableRendering>(subchunk.Value)) {
+                    foreach (var subchunk in subchunks)
+                    {
+                        if (entityManager.HasComponent<DisableRendering>(subchunk.Value))
+                        {
                             commandBuffer.RemoveComponent<DisableRendering>(subchunk.Value);
                         }
                     }
@@ -473,25 +558,32 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        private static void UpdateBuffer(ref ChunkBufferingSystemData systemData, in EntityManager entityManager, in int2 newCenter, in EntityCommandBuffer commandBuffer) {
-            for (int i = 0; i < systemData.ChunksBuffer.Length; i++) {
+        private static void UpdateBuffer(ref ChunkBufferingSystemData systemData, in EntityManager entityManager, in int2 newCenter, in EntityCommandBuffer commandBuffer)
+        {
+            for (int i = 0; i < systemData.ChunksBuffer.Length; i++)
+            {
                 systemData.ChunksBuffer[i] = Entity.Null;
             }
 
             var centerDelta = newCenter - systemData.Center;
-            for (int x = 0; x < systemData.ChunksSize; x++) {
-                for (int z = 0; z < systemData.ChunksSize; z++) {
-                    for (int y = 0; y < systemData.Height; y++) {
+            for (int x = 0; x < systemData.ChunksSize; x++)
+            {
+                for (int z = 0; z < systemData.ChunksSize; z++)
+                {
+                    for (int y = 0; y < systemData.Height; y++)
+                    {
                         var index = IndexUtility.ToIndex(x, y, z, systemData.ChunksSize, systemData.Height);
 
                         var chunk = systemData.Chunks[index];
-                        if (chunk == Entity.Null) {
+                        if (chunk == Entity.Null)
+                        {
                             continue;
                         }
 
                         int newX = x - centerDelta.x;
                         int newZ = z - centerDelta.y;
-                        if (IsOutOfBuffer(newX, newZ, systemData.ChunksSize)) {
+                        if (IsOutOfBuffer(newX, newZ, systemData.ChunksSize))
+                        {
                             commandBuffer.AddComponent<ChunkToDestroy>(chunk);
                             continue;
                         }
@@ -508,8 +600,10 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        private void GenerateLoadData(ref ChunkLoadData loadData, in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int2 column, int height, int distance) {
-            if (loadData.Data.IsCreated) {
+        private void GenerateLoadData(ref SystemState state, ref ChunkLoadData loadData, in ChunkBufferingSystemData systemData, in EntityManager entityManager, in EntityCommandBuffer commandBuffer, in int2 column, int height, int distance)
+        {
+            if (loadData.Data.IsCreated)
+            {
                 loadData.Data.Dispose();
             }
 
@@ -532,87 +626,129 @@ namespace Minecraft {
             int length = size * size;
             int direction = 0;
 
-            for (int i = 0; i < length; i++) {
+            NativeList<int2> initialColumns = default;
+
+            if (!state.EntityManager.HasComponent<InitialLoadingColumns>(state.SystemHandle))
+            {
+                initialColumns = new NativeList<int2>(Allocator.Persistent);
+            }
+
+            for (int i = 0; i < length; i++)
+            {
                 var lightRecalculationRequired = false;
-                for (int y = 0; y < height; y++) {
+                for (int y = 0; y < height; y++)
+                {
                     var chunkCoordinate = new int3(x, y, z);
 
                     bool isRendered = x != startX && x != endX && z != startZ && z != endZ;
-                    loadData.Data.Add(new ChunkLoadDescription {
+                    loadData.Data.Add(new ChunkLoadDescription
+                    {
                         Coordinate = chunkCoordinate,
                         IsRendered = isRendered
                     });
 
-                    if (!lightRecalculationRequired) {
+                    var currentColumn = new int2(x, z);
+                    if (isRendered && initialColumns.IsCreated && !initialColumns.Contains(currentColumn))
+                    {
+                        initialColumns.Add(currentColumn);
+                    }
+
+                    if (!lightRecalculationRequired)
+                    {
                         GetEntity(systemData, chunkCoordinate, out var chunkEntity);
-                        if (chunkEntity == Entity.Null) {
+                        if (chunkEntity == Entity.Null)
+                        {
                             lightRecalculationRequired = true;
                         }
                     }
                 }
 
-                if (lightRecalculationRequired) {
+                if (lightRecalculationRequired)
+                {
                     var requestEntity = entityManager.CreateEntity();
-                    commandBuffer.AddComponent(requestEntity, new SunlightRequest {
+                    commandBuffer.AddComponent(requestEntity, new SunlightRequest
+                    {
                         Column = new int2(x, z)
                     });
                 }
 
-                switch (direction) {
-                case 0:
-                    ++x;
-                    break;
-                case 1:
-                    --z;
-                    break;
-                case 2:
-                    --x;
-                    break;
-                case 3:
-                    ++z;
-                    break;
+                switch (direction)
+                {
+                    case 0:
+                        ++x;
+                        break;
+                    case 1:
+                        --z;
+                        break;
+                    case 2:
+                        --x;
+                        break;
+                    case 3:
+                        ++z;
+                        break;
                 }
 
-                if (direction == 0 && x == endXBound) {
+                if (direction == 0 && x == endXBound)
+                {
                     direction = 1;
-                } else if (direction == 1 && z == startZBound) {
+                }
+                else if (direction == 1 && z == startZBound)
+                {
                     direction = 2;
                     ++startZBound;
-                } else if (direction == 2 && x == startXBound) {
+                }
+                else if (direction == 2 && x == startXBound)
+                {
                     direction = 3;
                     --endZBound;
                     ++startXBound;
-                } else if (direction == 3 && z == endZBound) {
+                }
+                else if (direction == 3 && z == endZBound)
+                {
                     direction = 0;
                     --endXBound;
                 }
+            }
+
+            if (initialColumns.IsCreated)
+            {
+                var entity = state.EntityManager.CreateEntity();
+                commandBuffer.AddComponent(entity, new InitialLoadingColumns
+                {
+                    Columns = initialColumns
+                });
             }
 
             loadData.Sequence = loadData.Data.Length - 1;
         }
 
         [BurstCompile]
-        void ISystem.OnCreate(ref SystemState state) {
+        void ISystem.OnCreate(ref SystemState state)
+        {
             state.EntityManager.AddComponent<ChunkLoadData>(state.SystemHandle);
-            state.EntityManager.AddComponentData(state.SystemHandle, new ChunkBufferingSystemData {
+            state.EntityManager.AddComponentData(state.SystemHandle, new ChunkBufferingSystemData
+            {
                 Height = 16
             });
 
             var requestEntity = state.EntityManager.CreateEntity();
-            state.EntityManager.AddComponentData(requestEntity, new ChunkBufferingRequest {
-                NewDrawDistance = 4,
+            state.EntityManager.AddComponentData(requestEntity, new ChunkBufferingRequest
+            {
+                NewDrawDistance = 8,
             });
         }
 
         [BurstCompile]
-        void ISystem.OnUpdate(ref SystemState state) {
+        void ISystem.OnUpdate(ref SystemState state)
+        {
             var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
 
             var systemData = state.EntityManager.GetComponentDataRW<ChunkBufferingSystemData>(state.SystemHandle);
 
             foreach (var (request, entity) in SystemAPI
                 .Query<RefRO<ChunkBufferingRequest>>()
-                .WithEntityAccess()) {
+                .WithEntityAccess())
+            {
                 UpdateMetrics(ref systemData.ValueRW, request.ValueRO.NewDrawDistance);
                 commandBuffer.DestroyEntity(entity);
 
@@ -627,10 +763,12 @@ namespace Minecraft {
 
             foreach (var (_, entity) in SystemAPI
                 .Query<ChunkReloadingRequest>()
-                .WithEntityAccess()) {
+                .WithEntityAccess())
+            {
                 var loadingRequestEntity = state.EntityManager.CreateEntity();
                 var loadData = state.EntityManager.GetComponentDataRW<ChunkLoadData>(state.SystemHandle);
-                commandBuffer.AddComponent(loadingRequestEntity, new ChunkLoadingRequest {
+                commandBuffer.AddComponent(loadingRequestEntity, new ChunkLoadingRequest
+                {
                     NewCenter = loadData.ValueRO.LastPlayerColumn
                 });
 
@@ -644,20 +782,24 @@ namespace Minecraft {
 
             foreach (var localToWorld in SystemAPI
                 .Query<RefRO<LocalToWorld>>()
-                .WithAll<PlayerMovement>()) {
+                .WithAll<PlayerMovement>())
+            {
 
                 var position = localToWorld.ValueRO.Position;
-                var column = new int2 {
+                var column = new int2
+                {
                     x = (int)math.floor(position.x / Chunk.Size),
                     y = (int)math.floor(position.z / Chunk.Size)
                 };
 
                 var loadData = state.EntityManager.GetComponentDataRW<ChunkLoadData>(state.SystemHandle);
                 var lastPlayerColumn = loadData.ValueRO.LastPlayerColumn;
-                if (lastPlayerColumn.x != column.x || lastPlayerColumn.y != column.y) {
+                if (lastPlayerColumn.x != column.x || lastPlayerColumn.y != column.y)
+                {
                     loadData.ValueRW.LastPlayerColumn = column;
                     var requestEntity = state.EntityManager.CreateEntity();
-                    commandBuffer.AddComponent(requestEntity, new ChunkLoadingRequest {
+                    commandBuffer.AddComponent(requestEntity, new ChunkLoadingRequest
+                    {
                         NewCenter = column
                     });
                 }
@@ -671,28 +813,38 @@ namespace Minecraft {
             systemData = state.EntityManager.GetComponentDataRW<ChunkBufferingSystemData>(state.SystemHandle);
             var chunkLoadData = state.EntityManager.GetComponentDataRW<ChunkLoadData>(state.SystemHandle);
 
-            foreach (var (request, entity) in SystemAPI.Query<ChunkLoadingRequest>().WithEntityAccess()) {
+            foreach (var (request, entity) in SystemAPI.Query<ChunkLoadingRequest>().WithEntityAccess())
+            {
                 UpdateBuffer(ref systemData.ValueRW, state.EntityManager, request.NewCenter, commandBuffer);
-                GenerateLoadData(ref chunkLoadData.ValueRW, systemData.ValueRO, state.EntityManager, commandBuffer, request.NewCenter, systemData.ValueRO.Height, systemData.ValueRO.DrawDistance);
+                GenerateLoadData(ref state, ref chunkLoadData.ValueRW, systemData.ValueRO, state.EntityManager, commandBuffer, request.NewCenter, systemData.ValueRO.Height, systemData.ValueRO.DrawDistance);
                 commandBuffer.DestroyEntity(entity);
             }
 
             systemData = state.EntityManager.GetComponentDataRW<ChunkBufferingSystemData>(state.SystemHandle);
             chunkLoadData = state.EntityManager.GetComponentDataRW<ChunkLoadData>(state.SystemHandle);
 
-            if (chunkLoadData.ValueRO.Data.IsCreated) {
-                for (int i = chunkLoadData.ValueRO.Sequence; i >= 0; i--) {
+            if (chunkLoadData.ValueRO.Data.IsCreated)
+            {
+                for (int i = chunkLoadData.ValueRO.Sequence; i >= 0; i--)
+                {
                     var item = chunkLoadData.ValueRO.Data[i];
                     GetEntity(systemData.ValueRO, item.Coordinate, out var chunkEntity);
-                    if (chunkEntity != Entity.Null) {
-                        if (item.IsRendered) {
+                    if (chunkEntity != Entity.Null)
+                    {
+                        if (item.IsRendered)
+                        {
                             ShowChunk(state.EntityManager, commandBuffer, chunkEntity);
-                        } else {
+                        }
+                        else
+                        {
                             HideChunk(state.EntityManager, commandBuffer, chunkEntity);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         var newChunkEntity = state.EntityManager.CreateEntity();
-                        commandBuffer.AddComponent(newChunkEntity, new ChunkSpawnRequest {
+                        commandBuffer.AddComponent(newChunkEntity, new ChunkSpawnRequest
+                        {
                             Coordinate = item.Coordinate,
                             HasRenderer = item.IsRendered
                         });

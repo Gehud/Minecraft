@@ -1,8 +1,10 @@
 ﻿using Unity.Entities;
 using UnityEngine;
 
-namespace Minecraft.Player {
-    public class PlayerMovementAuthoring : MonoBehaviour {
+namespace Minecraft.Player
+{
+    public class PlayerMovementAuthoring : MonoBehaviour
+    {
         [SerializeField]
         public float speed = 15.0f;
         [SerializeField]
@@ -10,10 +12,13 @@ namespace Minecraft.Player {
         [SerializeField]
         public GameObject orientationSource;
 
-        private class Baker : Baker<PlayerMovementAuthoring> {
-            public override void Bake(PlayerMovementAuthoring authoring) {
+        private class Baker : Baker<PlayerMovementAuthoring>
+        {
+            public override void Bake(PlayerMovementAuthoring authoring)
+            {
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
-                AddComponent(entity, new PlayerMovement {
+                AddComponent(entity, new PlayerMovement
+                {
                     Speed = authoring.speed,
                     OrientationSource = GetEntity(authoring.orientationSource, TransformUsageFlags.Dynamic),
                     JumpHeight = authoring.jumpHeight,

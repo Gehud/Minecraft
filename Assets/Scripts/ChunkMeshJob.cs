@@ -5,22 +5,26 @@ using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [BurstCompile]
-    public struct ChunkMeshJob : IJob {
+    public struct ChunkMeshJob : IJob
+    {
         public Entity Entity;
         public ChunkMeshData MeshData;
         public Mesh.MeshDataArray MeshDataArray;
         [ReadOnly]
         public NativeArray<VertexAttributeDescriptor> Descriptors;
 
-        public void Execute() {
+        public void Execute()
+        {
             var mesh = MeshDataArray[0];
 
             mesh.SetVertexBufferParams(MeshData.Vertices.Length, Descriptors);
 
             var vertices = mesh.GetVertexData<Vertex>();
-            for (int i = 0; i < MeshData.Vertices.Length; i++) {
+            for (int i = 0; i < MeshData.Vertices.Length; i++)
+            {
                 vertices[i] = MeshData.Vertices[i];
             }
 
@@ -30,11 +34,13 @@ namespace Minecraft {
             mesh.SetIndexBufferParams(indicesCount, IndexFormat.UInt16);
             var indices = mesh.GetIndexData<ushort>();
 
-            for (int i = 0; i < opaqueIndicesCount; i++) {
+            for (int i = 0; i < opaqueIndicesCount; i++)
+            {
                 indices[i] = MeshData.OpaqueIndices[i];
             }
 
-            for (int i = 0; i < transparentIndicesCount; i++) {
+            for (int i = 0; i < transparentIndicesCount; i++)
+            {
                 indices[i + opaqueIndicesCount] = MeshData.TransparentIndices[i];
             }
 

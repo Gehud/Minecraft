@@ -5,38 +5,45 @@ using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [BurstCompile]
     [RequireMatchingQueriesForUpdate]
-    public partial struct ChunkSpawnSystem : ISystem {
+    public partial struct ChunkSpawnSystem : ISystem
+    {
         private const int batchSize = 16 * 9;
 
         private EntityQuery querry;
 
         [BurstCompile]
-        void ISystem.OnCreate(ref SystemState state) {
+        void ISystem.OnCreate(ref SystemState state)
+        {
             querry = SystemAPI.QueryBuilder()
                 .WithAll<ChunkSpawnRequest>()
                 .Build();
         }
 
         [BurstCompile]
-        private void Spawn(ref SystemState state, in EntityCommandBuffer commandBuffer, in Entity entity) {
+        private void Spawn(ref SystemState state, in EntityCommandBuffer commandBuffer, in Entity entity)
+        {
             var request = state.EntityManager.GetComponentData<ChunkSpawnRequest>(entity);
 
-            if (!request.HasRenderer) {
+            if (!request.HasRenderer)
+            {
                 commandBuffer.AddComponent<DisableRendering>(entity);
             }
 
             var position = request.Coordinate * Chunk.Size;
 
-            commandBuffer.AddComponent(entity, new LocalToWorld {
+            commandBuffer.AddComponent(entity, new LocalToWorld
+            {
                 Value = float4x4.Translate(position)
             });
 
             var voxels = new NativeArray<Voxel>(Chunk.Volume, Allocator.Persistent);
 
-            commandBuffer.AddComponent(entity, new Chunk {
+            commandBuffer.AddComponent(entity, new Chunk
+            {
                 Coordinate = request.Coordinate,
                 Voxels = voxels
             });
@@ -55,13 +62,15 @@ namespace Minecraft {
         }
 
         [BurstCompile]
-        void ISystem.OnUpdate(ref SystemState state) {
+        void ISystem.OnUpdate(ref SystemState state)
+        {
             var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
 
             var entities = querry.ToEntityArray(Allocator.Temp);
 
             var count = math.min(entities.Length, batchSize);
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
+            {
                 Spawn(ref state, commandBuffer, entities[i]);
             }
 

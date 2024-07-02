@@ -2,25 +2,32 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Minecraft.Utilities.Editor {
-    public class TextureMipClampUtility : EditorWindow {
+namespace Minecraft.Utilities.Editor
+{
+    public class TextureMipClampUtility : EditorWindow
+    {
         [SerializeField]
         private int maxMipLevel = 3;
 
         [MenuItem("Utilities/Texture Mip Clamp")]
-        private static void Create() {
+        private static void Create()
+        {
             GetWindow<TextureMipClampUtility>().Show();
         }
 
-        private void OnGUI() {
+        private void OnGUI()
+        {
             maxMipLevel = Mathf.Clamp(EditorGUILayout.IntField("Max Mip Level", maxMipLevel), 0, int.MaxValue);
-            if (GUILayout.Button("Generate")) {
+            if (GUILayout.Button("Generate"))
+            {
                 GenerateTexture();
             }
         }
 
-        private void GenerateTexture() {
-            if (Selection.activeObject is not Texture2D texture) {
+        private void GenerateTexture()
+        {
+            if (Selection.activeObject is not Texture2D texture)
+            {
                 Debug.Log("You must select a texture.");
                 return;
             }

@@ -8,9 +8,11 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
 
-namespace Minecraft {
+namespace Minecraft
+{
     [BurstCompile]
-    public struct ChunkMeshDataJob : IJob, IDisposable {
+    public struct ChunkMeshDataJob : IJob, IDisposable
+    {
         [ReadOnly]
         public Entity Entity;
         [ReadOnly]
@@ -25,14 +27,19 @@ namespace Minecraft {
         [ReadOnly]
         public NativeArray<Block> Blocks;
 
-        public void Execute() {
-            for (int x = 0; x < Chunk.Size; x++) {
-                for (int y = 0; y < Chunk.Size; y++) {
-                    for (int z = 0; z < Chunk.Size; z++) {
+        public void Execute()
+        {
+            for (int x = 0; x < Chunk.Size; x++)
+            {
+                for (int y = 0; y < Chunk.Size; y++)
+                {
+                    for (int z = 0; z < Chunk.Size; z++)
+                    {
                         var localVoxelCoordinate = new int3(x, y, z);
                         GetVoxel(localVoxelCoordinate, out Voxel voxel);
 
-                        if (voxel.Type == BlockType.Air) {
+                        if (voxel.Type == BlockType.Air)
+                        {
                             continue;
                         }
 
@@ -42,7 +49,8 @@ namespace Minecraft {
                         var indices = isTransparent ? TransparentIndices : OpaqueIndices;
 
                         // Right face
-                        if (HasFace(localVoxelCoordinate + new int3(1, 0, 0), voxel.Type)) {
+                        if (HasFace(localVoxelCoordinate + new int3(1, 0, 0), voxel.Type))
+                        {
                             var faceTexturing = texturing.Right;
                             var u1 = faceTexturing.x;
                             var u2 = faceTexturing.x;
@@ -131,7 +139,8 @@ namespace Minecraft {
                         }
 
                         // Left face
-                        if (HasFace(localVoxelCoordinate + new int3(-1, 0, 0), voxel.Type)) {
+                        if (HasFace(localVoxelCoordinate + new int3(-1, 0, 0), voxel.Type))
+                        {
                             var faceTexturing = texturing.Left;
                             var u1 = faceTexturing.x;
                             var u2 = faceTexturing.x;
@@ -221,7 +230,8 @@ namespace Minecraft {
                         }
 
                         // Top face
-                        if (HasFace(localVoxelCoordinate + new int3(0, 1, 0), voxel.Type)) {
+                        if (HasFace(localVoxelCoordinate + new int3(0, 1, 0), voxel.Type))
+                        {
                             var faceTexturing = texturing.Top;
                             var u1 = faceTexturing.x;
                             var u2 = faceTexturing.x;
@@ -311,7 +321,8 @@ namespace Minecraft {
                         }
 
                         // Buttom face
-                        if (HasFace(localVoxelCoordinate + new int3(0, -1, 0), voxel.Type)) {
+                        if (HasFace(localVoxelCoordinate + new int3(0, -1, 0), voxel.Type))
+                        {
                             var faceTexturing = texturing.Bottom;
                             var u1 = faceTexturing.x;
                             var u2 = faceTexturing.x;
@@ -401,7 +412,8 @@ namespace Minecraft {
                         }
 
                         // Front face
-                        if (HasFace(localVoxelCoordinate + new int3(0, 0, 1), voxel.Type)) {
+                        if (HasFace(localVoxelCoordinate + new int3(0, 0, 1), voxel.Type))
+                        {
                             var faceTexturing = texturing.Front;
                             var u1 = faceTexturing.x;
                             var u2 = faceTexturing.x;
@@ -490,7 +502,8 @@ namespace Minecraft {
                         }
 
                         // Back face
-                        if (HasFace(localVoxelCoordinate + new int3(0, 0, -1), voxel.Type)) {
+                        if (HasFace(localVoxelCoordinate + new int3(0, 0, -1), voxel.Type))
+                        {
                             var faceTexturing = texturing.Back;
                             var u1 = faceTexturing.x;
                             var u2 = faceTexturing.x;
@@ -582,13 +595,16 @@ namespace Minecraft {
             }
         }
 
-        private Vertex Pack(int x, int y, int z, int u, int v, int r, int g, int b, int s) {
+        private Vertex Pack(int x, int y, int z, int u, int v, int r, int g, int b, int s)
+        {
             return Vertex.Create(x, y, z, u, v, r, g, b, s);
         }
 
-        private void AddFaceIndices(in NativeList<ushort> indices, int aof1, int aof2, int aof3, int aof4, bool force = false) {
+        private void AddFaceIndices(in NativeList<ushort> indices, int aof1, int aof2, int aof3, int aof4, bool force = false)
+        {
             int vertexCount = Vertices.Length;
-            if (force || aof1 + aof3 < aof2 + aof4) {
+            if (force || aof1 + aof3 < aof2 + aof4)
+            {
                 // Fliped quad.
                 indices.Add((ushort)(0 + vertexCount));
                 indices.Add((ushort)(1 + vertexCount));
@@ -596,7 +612,9 @@ namespace Minecraft {
                 indices.Add((ushort)(3 + vertexCount));
                 indices.Add((ushort)(1 + vertexCount));
                 indices.Add((ushort)(2 + vertexCount));
-            } else {
+            }
+            else
+            {
                 // Normal quad.
                 indices.Add((ushort)(0 + vertexCount));
                 indices.Add((ushort)(1 + vertexCount));
@@ -607,7 +625,8 @@ namespace Minecraft {
             }
         }
 
-        private void GetVoxel(in int3 localVoxelCoordinate, out Voxel voxel) {
+        private void GetVoxel(in int3 localVoxelCoordinate, out Voxel voxel)
+        {
             var voxelCoordinate = ChunkCoordinate * Chunk.Size + localVoxelCoordinate;
             var sideChunkCoordinate = CoordinateUtility.ToChunk(voxelCoordinate);
 
@@ -617,7 +636,8 @@ namespace Minecraft {
             sideChunkCoordinate += new int3(1, 1, 1);
             var clasterIndex = IndexUtility.ToIndex(sideChunkCoordinate, 3, 3);
             var voxels = Claster[clasterIndex];
-            if (!voxels.IsCreated) {
+            if (!voxels.IsCreated)
+            {
                 voxel = default;
                 return;
             }
@@ -626,22 +646,26 @@ namespace Minecraft {
             voxel = voxels[sideLocalVoxelIndex];
         }
 
-        private byte GetLight(int x, int y, int z, LightChanel chanel) {
+        private byte GetLight(int x, int y, int z, LightChanel chanel)
+        {
             GetVoxel(new int3(x, y, z), out var voxel);
             return voxel.Light.Get(chanel);
         }
 
-        private bool IsTransparent(int x, int y, int z) {
+        private bool IsTransparent(int x, int y, int z)
+        {
             GetVoxel(new int3(x, y, z), out var voxel);
             return Blocks[(int)voxel.Type].IsTransparent;
         }
 
-        private bool HasFace(in int3 localVoxelCoordinate, BlockType blockType) {
+        private bool HasFace(in int3 localVoxelCoordinate, BlockType blockType)
+        {
             GetVoxel(localVoxelCoordinate, out var voxel);
             return Blocks[(int)voxel.Type].IsTransparent && voxel.Type != blockType;
         }
 
-        public void Dispose() {
+        public void Dispose()
+        {
             Claster.Dispose();
         }
     }

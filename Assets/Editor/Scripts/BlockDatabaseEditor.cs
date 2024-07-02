@@ -3,30 +3,38 @@ using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
-namespace Minecraft.Editor {
+namespace Minecraft.Editor
+{
     [CustomEditor(typeof(BlockDatabase))]
-    public class BlockDatabaseEditor : UnityEditor.Editor {
+    public class BlockDatabaseEditor : UnityEditor.Editor
+    {
         private ReorderableList list;
 
         private const float ELEMENT_DISTANCE = 2.0f;
 
-        private void OnEnable() {
-            list = new ReorderableList(serializedObject, serializedObject.FindProperty("pairs")) {
+        private void OnEnable()
+        {
+            list = new ReorderableList(serializedObject, serializedObject.FindProperty("pairs"))
+            {
                 drawHeaderCallback = DrawHeader,
                 drawElementCallback = DrawElement,
                 onAddDropdownCallback = OnAddDropdown
             };
         }
 
-        private void DrawHeader(Rect rect) {
+        private void DrawHeader(Rect rect)
+        {
             GUI.Label(rect, "Data");
         }
 
-        private bool IsKeyUnique(BlockType key) {
-            for (int i = 0; i < list.serializedProperty.arraySize; i++) {
+        private bool IsKeyUnique(BlockType key)
+        {
+            for (int i = 0; i < list.serializedProperty.arraySize; i++)
+            {
                 var element = list.serializedProperty.GetArrayElementAtIndex(i);
                 var value = (BlockType)element.FindPropertyRelative("Key").enumValueIndex;
-                if (value == key) {
+                if (value == key)
+                {
                     return false;
                 }
             }
@@ -34,7 +42,8 @@ namespace Minecraft.Editor {
             return true;
         }
 
-        private void DrawElement(Rect rect, int index, bool isActive, bool isFocused) {
+        private void DrawElement(Rect rect, int index, bool isActive, bool isFocused)
+        {
             var element = list.serializedProperty.GetArrayElementAtIndex(index);
             rect.y += 2;
             rect.width /= 2.0f;
@@ -46,7 +55,8 @@ namespace Minecraft.Editor {
 
             var oldKey = (BlockType)key.enumValueIndex;
             var newKey = (BlockType)EditorGUI.EnumPopup(rect, (BlockType)key.enumValueIndex);
-            if (newKey != oldKey && IsKeyUnique(newKey)) {
+            if (newKey != oldKey && IsKeyUnique(newKey))
+            {
                 key.enumValueIndex = (int)newKey;
             }
 
@@ -55,9 +65,11 @@ namespace Minecraft.Editor {
             value.objectReferenceValue = EditorGUI.ObjectField(rect, value.objectReferenceValue, typeof(BlockDescription), false);
         }
 
-        private void ClickHandler(object target) {
+        private void ClickHandler(object target)
+        {
             var data = (BlockType)target;
-            if (!IsKeyUnique(data)) {
+            if (!IsKeyUnique(data))
+            {
                 Debug.LogError("Key already presented in database.");
                 return;
             }
@@ -72,9 +84,11 @@ namespace Minecraft.Editor {
         }
 
 
-        private void OnAddDropdown(Rect rect, ReorderableList list) {
+        private void OnAddDropdown(Rect rect, ReorderableList list)
+        {
             var menu = new GenericMenu();
-            foreach (var name in Enum.GetNames(typeof(BlockType))) {
+            foreach (var name in Enum.GetNames(typeof(BlockType)))
+            {
                 var value = Enum.Parse(typeof(BlockType), name);
                 menu.AddItem(new GUIContent(name), false, ClickHandler, value);
             }
@@ -82,7 +96,8 @@ namespace Minecraft.Editor {
             menu.ShowAsContext();
         }
 
-        public override void OnInspectorGUI() {
+        public override void OnInspectorGUI()
+        {
             serializedObject.Update();
             list.DoLayoutList();
             serializedObject.ApplyModifiedProperties();

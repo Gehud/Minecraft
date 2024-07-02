@@ -3,11 +3,15 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Minecraft.UI {
-    public class BlockView : SlotItem {
-        public BlockType BlockType {
+namespace Minecraft.UI
+{
+    public class BlockView : SlotItem
+    {
+        public BlockType BlockType
+        {
             get => blockType;
-            set {
+            set
+            {
                 blockType = value;
                 var description = blockDatabase.Data[value];
                 var size = 16.0f / 256.0f;
@@ -20,9 +24,11 @@ namespace Minecraft.UI {
 
         private BlockType blockType;
 
-        public int Count {
+        public int Count
+        {
             get => count;
-            set {
+            set
+            {
                 count = value;
                 countText.text = value.ToString();
                 countText.gameObject.SetActive(count > 0);
@@ -42,7 +48,8 @@ namespace Minecraft.UI {
         [SerializeField]
         private TMP_Text countText;
 
-        private void Awake() {
+        private void Awake()
+        {
             Count = 0;
         }
     }

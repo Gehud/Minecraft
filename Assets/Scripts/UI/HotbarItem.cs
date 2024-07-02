@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 
-namespace Minecraft.UI {
-    public class HotbarItem : MonoBehaviour {
+namespace Minecraft.UI
+{
+    public class HotbarItem : MonoBehaviour
+    {
         public SlotItem SlotItem { get; set; }
     }
 }
