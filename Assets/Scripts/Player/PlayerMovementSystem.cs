@@ -11,29 +11,37 @@ namespace Minecraft.Player
     {
         protected override void OnUpdate()
         {
+            if (!SystemAPI.HasSingleton<GameLoadingMarker>())
+            {
+                return;
+            }
+
             var playerInput = SystemAPI.GetSingleton<PlayerInput>();
 
-            Entities.ForEach((ref Hitbox hitbox, in PlayerMovement movement) =>
-            {
-                var orientation = EntityManager.GetComponentData<LocalToWorld>(movement.OrientationSource);
-
-                var velocity = hitbox.Velocity;
-
-                var translation = orientation.Forward * playerInput.Movement.y
-                    + orientation.Right * playerInput.Movement.x;
-
-                translation *= movement.Speed * (playerInput.IsSprint ? 1.5f : 1.0f);
-
-                velocity.z = translation.z;
-                velocity.x = translation.x;
-
-                if (playerInput.IsJump)
+            Entities
+                .ForEach((ref Hitbox hitbox, in PlayerMovement movement) =>
                 {
-                    velocity -= math.sign(PhysicsSystem.Gravity) * math.sqrt(2.0f * movement.JumpHeight * math.abs(PhysicsSystem.Gravity));
-                }
+                    var orientation = EntityManager.GetComponentData<LocalToWorld>(movement.OrientationSource);
 
-                hitbox.Velocity = velocity;
-            }).WithoutBurst().Run();
+                    var velocity = hitbox.Velocity;
+
+                    var translation = orientation.Forward * playerInput.Movement.y
+                        + orientation.Right * playerInput.Movement.x;
+
+                    translation *= movement.Speed * (playerInput.IsSprint ? 1.5f : 1.0f);
+
+                    velocity.z = translation.z;
+                    velocity.x = translation.x;
+
+                    if (playerInput.IsJump)
+                    {
+                        velocity -= math.sign(PhysicsSystem.Gravity) * math.sqrt(2.0f * movement.JumpHeight * math.abs(PhysicsSystem.Gravity));
+                    }
+
+                    hitbox.Velocity = velocity;
+                })
+               .WithoutBurst()
+               .Run();
         }
     }
 }

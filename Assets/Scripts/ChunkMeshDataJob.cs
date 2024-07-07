@@ -132,10 +132,10 @@ namespace Minecraft
                             var aof4 = lr4 + lg4 + lb4 + ls4;
 
                             AddFaceIndices(indices, aof1, aof2, aof3, aof4);
-                            Vertices.Add(Pack(x + 1, y + 0, z + 0, u1, v1, lr1, lg1, lb1, ls1));
-                            Vertices.Add(Pack(x + 1, y + 1, z + 0, u2, v2, lr2, lg2, lb2, ls2));
-                            Vertices.Add(Pack(x + 1, y + 1, z + 1, u3, v3, lr3, lg3, lb3, ls3));
-                            Vertices.Add(Pack(x + 1, y + 0, z + 1, u4, v4, lr4, lg4, lb4, ls4));
+                            Vertices.Add(Vertex.Create(x + 1, y + 0, z + 0, u1, v1, lr1, lg1, lb1, ls1));
+                            Vertices.Add(Vertex.Create(x + 1, y + 1, z + 0, u2, v2, lr2, lg2, lb2, ls2));
+                            Vertices.Add(Vertex.Create(x + 1, y + 1, z + 1, u3, v3, lr3, lg3, lb3, ls3));
+                            Vertices.Add(Vertex.Create(x + 1, y + 0, z + 1, u4, v4, lr4, lg4, lb4, ls4));
                         }
 
                         // Left face
@@ -223,10 +223,10 @@ namespace Minecraft
                             var aof4 = lr4 + lg4 + lb4 + ls4;
 
                             AddFaceIndices(indices, aof1, aof2, aof3, aof4);
-                            Vertices.Add(Pack(x + 0, y + 0, z + 1, u1, v1, lr1, lg1, lb1, ls1));
-                            Vertices.Add(Pack(x + 0, y + 1, z + 1, u2, v2, lr2, lg2, lb2, ls2));
-                            Vertices.Add(Pack(x + 0, y + 1, z + 0, u3, v3, lr3, lg3, lb3, ls3));
-                            Vertices.Add(Pack(x + 0, y + 0, z + 0, u4, v4, lr4, lg4, lb4, ls4));
+                            Vertices.Add(Vertex.Create(x + 0, y + 0, z + 1, u1, v1, lr1, lg1, lb1, ls1));
+                            Vertices.Add(Vertex.Create(x + 0, y + 1, z + 1, u2, v2, lr2, lg2, lb2, ls2));
+                            Vertices.Add(Vertex.Create(x + 0, y + 1, z + 0, u3, v3, lr3, lg3, lb3, ls3));
+                            Vertices.Add(Vertex.Create(x + 0, y + 0, z + 0, u4, v4, lr4, lg4, lb4, ls4));
                         }
 
                         // Top face
@@ -314,10 +314,10 @@ namespace Minecraft
                             var aof4 = lr4 + lg4 + lb4 + ls4;
 
                             AddFaceIndices(indices, aof1, aof2, aof3, aof4);
-                            Vertices.Add(Pack(x + 0, y + 1, z + 0, u1, v1, lr1, lg1, lb1, ls1));
-                            Vertices.Add(Pack(x + 0, y + 1, z + 1, u2, v2, lr2, lg2, lb2, ls2));
-                            Vertices.Add(Pack(x + 1, y + 1, z + 1, u3, v3, lr3, lg3, lb3, ls3));
-                            Vertices.Add(Pack(x + 1, y + 1, z + 0, u4, v4, lr4, lg4, lb4, ls4));
+                            Vertices.Add(Vertex.Create(x + 0, y + 1, z + 0, u1, v1, lr1, lg1, lb1, ls1));
+                            Vertices.Add(Vertex.Create(x + 0, y + 1, z + 1, u2, v2, lr2, lg2, lb2, ls2));
+                            Vertices.Add(Vertex.Create(x + 1, y + 1, z + 1, u3, v3, lr3, lg3, lb3, ls3));
+                            Vertices.Add(Vertex.Create(x + 1, y + 1, z + 0, u4, v4, lr4, lg4, lb4, ls4));
                         }
 
                         // Buttom face
@@ -405,10 +405,10 @@ namespace Minecraft
                             var aof4 = lr4 + lg4 + lb4 + ls4;
 
                             AddFaceIndices(indices, aof1, aof2, aof3, aof4);
-                            Vertices.Add(Pack(x + 1, y + 0, z + 0, u1, v1, lr1, lg1, lb1, ls1));
-                            Vertices.Add(Pack(x + 1, y + 0, z + 1, u2, v2, lr2, lg2, lb2, ls2));
-                            Vertices.Add(Pack(x + 0, y + 0, z + 1, u3, v3, lr3, lg3, lb3, ls3));
-                            Vertices.Add(Pack(x + 0, y + 0, z + 0, u4, v4, lr4, lg4, lb4, ls4));
+                            Vertices.Add(Vertex.Create(x + 1, y + 0, z + 0, u1, v1, lr1, lg1, lb1, ls1));
+                            Vertices.Add(Vertex.Create(x + 1, y + 0, z + 1, u2, v2, lr2, lg2, lb2, ls2));
+                            Vertices.Add(Vertex.Create(x + 0, y + 0, z + 1, u3, v3, lr3, lg3, lb3, ls3));
+                            Vertices.Add(Vertex.Create(x + 0, y + 0, z + 0, u4, v4, lr4, lg4, lb4, ls4));
                         }
 
                         // Front face
@@ -495,10 +495,10 @@ namespace Minecraft
                             var aof4 = lr4 + lg4 + lb4 + ls4;
 
                             AddFaceIndices(indices, aof1, aof2, aof3, aof4);
-                            Vertices.Add(Pack(x + 1, y + 0, z + 1, u1, v1, lr1, lg1, lb1, ls1));
-                            Vertices.Add(Pack(x + 1, y + 1, z + 1, u2, v2, lr2, lg2, lb2, ls2));
-                            Vertices.Add(Pack(x + 0, y + 1, z + 1, u3, v3, lr3, lg3, lb3, ls3));
-                            Vertices.Add(Pack(x + 0, y + 0, z + 1, u4, v4, lr4, lg4, lb4, ls4));
+                            Vertices.Add(Vertex.Create(x + 1, y + 0, z + 1, u1, v1, lr1, lg1, lb1, ls1));
+                            Vertices.Add(Vertex.Create(x + 1, y + 1, z + 1, u2, v2, lr2, lg2, lb2, ls2));
+                            Vertices.Add(Vertex.Create(x + 0, y + 1, z + 1, u3, v3, lr3, lg3, lb3, ls3));
+                            Vertices.Add(Vertex.Create(x + 0, y + 0, z + 1, u4, v4, lr4, lg4, lb4, ls4));
                         }
 
                         // Back face
@@ -585,19 +585,14 @@ namespace Minecraft
                             var aof4 = lr4 + lg4 + lb4 + ls4;
 
                             AddFaceIndices(indices, aof1, aof2, aof3, aof4);
-                            Vertices.Add(Pack(x + 0, y + 0, z + 0, u1, v1, lr1, lg1, lb1, ls1));
-                            Vertices.Add(Pack(x + 0, y + 1, z + 0, u2, v2, lr2, lg2, lb2, ls2));
-                            Vertices.Add(Pack(x + 1, y + 1, z + 0, u3, v3, lr3, lg3, lb3, ls3));
-                            Vertices.Add(Pack(x + 1, y + 0, z + 0, u4, v4, lr4, lg4, lb4, ls4));
+                            Vertices.Add(Vertex.Create(x + 0, y + 0, z + 0, u1, v1, lr1, lg1, lb1, ls1));
+                            Vertices.Add(Vertex.Create(x + 0, y + 1, z + 0, u2, v2, lr2, lg2, lb2, ls2));
+                            Vertices.Add(Vertex.Create(x + 1, y + 1, z + 0, u3, v3, lr3, lg3, lb3, ls3));
+                            Vertices.Add(Vertex.Create(x + 1, y + 0, z + 0, u4, v4, lr4, lg4, lb4, ls4));
                         }
                     }
                 }
             }
-        }
-
-        private Vertex Pack(int x, int y, int z, int u, int v, int r, int g, int b, int s)
-        {
-            return Vertex.Create(x, y, z, u, v, r, g, b, s);
         }
 
         private void AddFaceIndices(in NativeList<ushort> indices, int aof1, int aof2, int aof3, int aof4, bool force = false)

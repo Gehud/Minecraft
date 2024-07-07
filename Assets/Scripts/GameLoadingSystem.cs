@@ -76,6 +76,10 @@ namespace Minecraft
             {
                 GameLoading?.Invoke(1f);
                 GameLoaded?.Invoke();
+
+                var entity = EntityManager.CreateEntity();
+                EntityManager.AddComponent<GameLoadingMarker>(entity);
+
                 isLoaded = true;
             }
         }

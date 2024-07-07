@@ -14,6 +14,11 @@ namespace Minecraft.Player
     {
         protected override void OnUpdate()
         {
+            if (!SystemAPI.HasSingleton<GameLoadingMarker>())
+            {
+                return;
+            }
+
             var camera = Camera.main;
             if (!camera)
             {
