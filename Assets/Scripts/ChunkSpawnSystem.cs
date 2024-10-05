@@ -1,6 +1,8 @@
+using System;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Rendering;
 using Unity.Transforms;
@@ -13,12 +15,12 @@ namespace Minecraft
     {
         private const int batchSize = 16 * 9;
 
-        private EntityQuery querry;
+        private EntityQuery query;
 
         [BurstCompile]
         void ISystem.OnCreate(ref SystemState state)
         {
-            querry = SystemAPI.QueryBuilder()
+            query = SystemAPI.QueryBuilder()
                 .WithAll<ChunkSpawnRequest>()
                 .Build();
         }
@@ -62,11 +64,37 @@ namespace Minecraft
         }
 
         [BurstCompile]
+        private struct SpawnJob : IJob, IDisposable
+        {
+            public NativeList<Entity> Entities;
+
+            public void Execute()
+            {
+
+            }
+
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        [BurstCompile]
         void ISystem.OnUpdate(ref SystemState state)
         {
+            if (query.CalculateEntityCount() == 0)
+            {
+                return;
+            }
+
             var commandBuffer = new EntityCommandBuffer(Allocator.Temp);
 
-            var entities = querry.ToEntityArray(Allocator.Temp);
+            var entities = query.ToEntityListAsync
+            (
+                Allocator.Temp, 
+                state.Dependency, 
+                out var entitiesHandle
+            );
 
             var count = math.min(entities.Length, batchSize);
             for (int i = 0; i < count; i++)
@@ -75,7 +103,6 @@ namespace Minecraft
             }
 
             entities.Dispose();
-
             commandBuffer.Playback(state.EntityManager);
             commandBuffer.Dispose();
         }
